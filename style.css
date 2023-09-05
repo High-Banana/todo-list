@@ -54,7 +54,7 @@ button:hover {
 }
 
 .project-form {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 0.5rem;
 }
@@ -67,10 +67,29 @@ button:hover {
 
 .project-form-button {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.project-form-button button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    transition: .2s;
 }
 
 .addButton {
-    background-color: green;
-    display: none;
+    background-color: rgb(0, 193, 0);
+}
+
+.addButton:hover {
+    background-color: rgb(0, 172, 0);
+}
+
+.cancelButton {
+    background-color: rgb(255, 64, 64);
+}
+
+.cancelButton:hover {
+    background-color: rgb(227, 0, 0);
 }
