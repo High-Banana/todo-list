@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
     <script src="main.js" defer></script>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="side-bar">
-        <li>Inbox</li>
-        <li>Today</li>
-        <li>Upcoming</li>
-        <li>Anytime</li>
-        <li>Someday</li>
-    </div>
+    <main>
+        <div class="side-bar">
+            <div class="default-options">
+                <button>Inbox</button>
+                <button>Today</button>
+                <button>Upcoming</button>
+            </div>
+            <div class="project-container">
+                <h2>Projects</h2>
+                <span class="add-project-button"><span class="plus-symbol">+</span><button>Add project</button></span>
+                <div class="project-list">
+                    <button>nasdf</button>
+                    <button>nasdf</button>
+                </div>
+            </div>
+        </div>
+        <div class="task-container">
+            <h1>Inbox</h1>
+            <button id="add-task-button">Add task</button>
+        </div>
+    </main>
 </body>
+
 </html>
