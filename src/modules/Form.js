@@ -1,11 +1,6 @@
 export function loadForm() {
     const projectContainer = document.querySelector(".project-container");
-    projectContainer.appendChild(createForm());
-}
-
-export function showForm() {
-    const projectForm = document.querySelector(".project-form");
-    projectForm.style.display = "flex";
+    return projectContainer.appendChild(createForm());
 }
 
 function createForm() {
