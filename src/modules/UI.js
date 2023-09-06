@@ -15,17 +15,31 @@ export default function updateDom() {
 
     function createProjectList() {
         const inputField = document.getElementById("project-title-input");
-        if (inputField.value === "") return;
+
+        if (inputField.value === "") {
+            inputField.classList.add("invalid");
+            displayErrorMessage();
+            setTimeout(hideErrorMessage, 3000);
+            inputField.addEventListener("input", () => {
+                if (inputField.value === "") {
+                    inputField.classList.add("invalid");
+                } else if (inputField.value !== "") {
+                    inputField.classList.remove("invalid");
+                }
+            })
+            return;
+        };
 
         const projectName = document.createElement("button");
         projectName.textContent = getProjectTitle();
-        
+
         projectList.appendChild(projectName);
         projectContainer.appendChild(projectList);
 
         function getProjectTitle() {
             const project = new Project(inputField.value);
             project.setProjectList(project.title);
+            removeForm();
             return project.title;
         }
     }
@@ -46,7 +60,7 @@ export default function updateDom() {
         addButton.addEventListener("click", () => {
             if (formDisplayed) {
                 createProjectList();
-                removeForm();
+                // removeForm();
             }
         });
         document.addEventListener("keydown", (event) => {
@@ -72,4 +86,16 @@ export default function updateDom() {
         addButtonHandler();
         cancelButtonHandler();
     });
+
+    function displayErrorMessage() {
+        const errorMessage = document.createElement("p");
+        errorMessage.textContent = "Project title cannot be empty";
+        errorMessage.classList.add("error-message");
+        document.body.appendChild(errorMessage);
+    }
+
+    function hideErrorMessage() {
+        const errorMessage = document.querySelector(".error-message");
+        errorMessage.style.display = "none";
+    }
 }

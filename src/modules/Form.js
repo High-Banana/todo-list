@@ -10,7 +10,8 @@ function createForm() {
 
     const input = document.createElement("input");
     input.setAttribute("id", "project-title-input");
-    input.placeholder = "Project Title";
+    input.setAttribute("autocomplete", "off");
+    input.placeholder = "Enter Project Title";
 
     const projectFormButton = document.createElement("div");
     projectFormButton.classList.add("project-form-button");
