@@ -54,7 +54,7 @@ button:hover {
 }
 
 .project-form {
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
@@ -92,4 +92,15 @@ button:hover {
 
 .cancelButton:hover {
     background-color: rgb(227, 0, 0);
+}
+
+.project-list {
+    display: flex;
+    width: 80%;
+    margin: auto;
+}
+
+.project-delete-button {
+    display: flex;
+    margin-left: auto;
 }
