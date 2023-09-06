@@ -1,6 +1,6 @@
 export function loadForm() {
-    const projectContainer = document.querySelector(".project-container");
-    return projectContainer.appendChild(createForm());
+    const projectList = document.querySelector(".project-list");
+    return projectList.before(createForm());
 }
 
 function createForm() {
