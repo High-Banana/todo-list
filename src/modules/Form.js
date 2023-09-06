@@ -1,4 +1,4 @@
-export default function loadForm() {
+export function loadForm() {
     const projectContainer = document.querySelector(".project-container");
     projectContainer.appendChild(createForm());
 }
@@ -6,11 +6,6 @@ export default function loadForm() {
 export function showForm() {
     const projectForm = document.querySelector(".project-form");
     projectForm.style.display = "flex";
-}
-
-export function removeForm() {
-    const projectForm = document.querySelector(".project-form");
-    projectForm.style.display = "none";
 }
 
 function createForm() {
