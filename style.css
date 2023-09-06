@@ -5,6 +5,19 @@
     outline: none;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 5px;
+}
+
 main {
     display: grid;
     grid-template-columns: 320px auto;
@@ -124,6 +137,7 @@ button:hover {
     flex-direction: column;
     gap: 1.5rem;
     margin: auto;
+    width: 100%;
 }
 
 .project-list button{
@@ -131,7 +145,6 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
 }
 
 .project-left-side {
