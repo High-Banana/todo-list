@@ -7,8 +7,8 @@
 
 main {
     display: grid;
-    grid-template-columns: 1fr 3fr;
-    min-height: 100vh;
+    grid-template-columns: 320px auto;
+    height: 100vh;
 }
 
 button {
@@ -35,7 +35,8 @@ button:hover {
     gap: 2rem;
     padding: 3rem 2rem;
     background-color: rgb(216, 216, 216);
-    /* align-items: start; */
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .default-options {
@@ -116,4 +117,29 @@ button:hover {
     border-radius: 5px;
     color: white;
     font-weight: 600;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: auto;
+}
+
+.project-list button{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.project-left-side {
+    display: flex;
+    gap: 1.2rem;
+}
+
+.project-right-side button{
+    display: flex;
+    align-items: center;
 }
