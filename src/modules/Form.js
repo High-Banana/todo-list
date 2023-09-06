@@ -1,11 +1,6 @@
 export function loadForm() {
-    const projectContainer = document.querySelector(".project-container");
-    projectContainer.appendChild(createForm());
-}
-
-export function showForm() {
-    const projectForm = document.querySelector(".project-form");
-    projectForm.style.display = "flex";
+    const projectList = document.querySelector(".project-list");
+    return projectList.before(createForm());
 }
 
 function createForm() {
@@ -15,7 +10,8 @@ function createForm() {
 
     const input = document.createElement("input");
     input.setAttribute("id", "project-title-input");
-    input.placeholder = "Project Title";
+    input.setAttribute("autocomplete", "off");
+    input.placeholder = "Enter Project Title";
 
     const projectFormButton = document.createElement("div");
     projectFormButton.classList.add("project-form-button");
