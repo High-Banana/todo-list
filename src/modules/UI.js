@@ -122,12 +122,6 @@ export default function updateDom() {
         });
     }
 
-    addProjectButton.addEventListener("click", () => {
-        displayProjectForm();
-        addButtonHandler();
-        cancelButtonHandler();
-    });
-
     function displayEmptyErrorMessage() {
         const errorMessage = document.createElement("p");
         errorMessage.textContent = "Project title cannot be empty";
@@ -146,4 +140,22 @@ export default function updateDom() {
         const errorMessage = document.querySelector(".error-message");
         document.body.removeChild(errorMessage);
     }
+
+    function displayTaskForm() {
+        const taskContainer = document.querySelector(".task-container");
+        const formContainer = document.createElement("div");
+        const legendElem = document.createElement("legend");
+        legendElem.textContent = ""
+        const formContent = document.createElement("form");
+        
+        taskContainer.appendChild(formContainer);
+        formContainer.appendChild(formContent);
+    }
+    // displayTaskForm();
+
+    addProjectButton.addEventListener("click", () => {
+        displayProjectForm();
+        addButtonHandler();
+        cancelButtonHandler();
+    });
 }
