@@ -9,7 +9,7 @@ export default function updateDom() {
     let projectFormDisplayed = false;
     let taskFormDisplayed = false;
 
-    if(taskFormDisplayed) {
+    if (taskFormDisplayed) {
         console.log("ok");
     }
 
@@ -20,7 +20,7 @@ export default function updateDom() {
 
     function displayProjectForm() {
         addProjectButton.style.display = "none";
-        loadProjectForm, loadTaskForm();
+        loadProjectForm();
         projectFormDisplayed = true;
     }
 
@@ -94,18 +94,34 @@ export default function updateDom() {
     }
 
     function removeForm() {
-        const projectForm = document.querySelector(".project-form");
+        if (projectFormDisplayed) {
 
-        getInputField().value = "";
-        projectFormDisplayed = false;
-        projectForm.removeEventListener("keydown", addButtonHandler);
+            const projectForm = document.querySelector(".project-form");
 
-        addProjectButton.style.display = "flex";
-        projectContainer.removeChild(projectForm);
+            getInputField().value = "";
+            projectFormDisplayed = false;
+            projectForm.removeEventListener("keydown", addButtonHandler);
+
+            addProjectButton.style.display = "flex";
+            projectContainer.removeChild(projectForm);
+        }
+
+        if (taskFormDisplayed) {
+            const popupField = document.querySelector(".popup-field");
+            const main = document.querySelector("main");
+            taskFormDisplayed = false;
+
+            main.removeChild(popupField);
+        }
     }
 
     function createTaskList() {
         console.log("tasks");
+    }
+
+    function displayTaskForm() {
+        loadTaskForm();
+        taskFormDisplayed = true;
     }
 
     function addButtonHandler() {
@@ -117,23 +133,33 @@ export default function updateDom() {
                 if (projectFormDisplayed) createProjectList();
                 if (taskFormDisplayed) createTaskList();
             });
-            projectForm.addEventListener("keydown", (event) => {
-                if (event.key === "Enter" && projectFormDisplayed) {
-                    createProjectList();
-                };
-            });
+
+            if (projectFormDisplayed) {
+                projectForm.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" && projectFormDisplayed) {
+                        createProjectList();
+                    };
+                });
+            }
         })
     }
 
     function cancelButtonHandler() {
-        const cancelButton = document.querySelector(".cancelButton");
+        const cancelButton = document.querySelectorAll(".cancelButton");
         const projectForm = document.querySelector(".project-form");
-        cancelButton.addEventListener("click", removeForm);
-        projectForm.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" && projectFormDisplayed) {
+        cancelButton.forEach(button => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
                 removeForm();
-            };
-        });
+            });
+            if (projectFormDisplayed) {
+                projectForm.addEventListener("keydown", (event) => {
+                    if (event.key === "Escape" && projectFormDisplayed) {
+                        removeForm();
+                    };
+                });
+            }
+        })
     }
 
     function displayEmptyErrorMessage() {
@@ -155,11 +181,6 @@ export default function updateDom() {
         document.body.removeChild(errorMessage);
     }
 
-    function displayTaskForm() {
-        loadTaskForm();
-        // popupField.style.display = "flex";
-    }
-
     addProjectButton.addEventListener("click", () => {
         displayProjectForm();
         addButtonHandler();
@@ -167,7 +188,8 @@ export default function updateDom() {
     });
 
     addTaskButton.addEventListener("click", () => {
-        taskFormDisplayed = true;
         displayTaskForm();
+        addButtonHandler();
+        cancelButtonHandler();
     })
 }
