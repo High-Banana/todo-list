@@ -13,11 +13,9 @@ export default function updateDom() {
         formDisplayed = true;
     }
 
-    function createProjectList() {
+    function checkInvalidInput() {
         const inputField = document.getElementById("project-title-input");
-
-        if (inputField.value === "") {
-            inputField.classList.add("invalid");
+        inputField.classList.add("invalid");
             displayEmptyErrorMessage();
             setTimeout(hideErrorMessage, 3000);
             inputField.addEventListener("input", () => {
@@ -27,6 +25,13 @@ export default function updateDom() {
                     inputField.classList.remove("invalid");
                 }
             })
+    }
+
+    function createProjectList() {
+        const inputField = document.getElementById("project-title-input");
+
+        if (inputField.value === "") {
+            checkInvalidInput();
             return;
         };
 
@@ -75,6 +80,7 @@ export default function updateDom() {
 
         inputField.value = "";
         formDisplayed = false;
+        projectForm.removeEventListener("keydown", addButtonHandler);
 
         addProjectButton.style.display = "flex";
         projectContainer.removeChild(projectForm);
@@ -82,12 +88,11 @@ export default function updateDom() {
 
     function addButtonHandler() {
         const addButton = document.querySelector(".addButton");
+        const projectForm = document.querySelector(".project-form");
         addButton.addEventListener("click", () => {
-            if (formDisplayed) {
-                createProjectList();
-            }
+            if (formDisplayed) createProjectList();
         });
-        document.addEventListener("keydown", (event) => {
+        projectForm.addEventListener("keydown", (event) => {
             if (event.key === "Enter" && formDisplayed) {
                 createProjectList();
             };
@@ -96,8 +101,9 @@ export default function updateDom() {
 
     function cancelButtonHandler() {
         const cancelButton = document.querySelector(".cancelButton");
+        const projectForm = document.querySelector(".project-form");
         cancelButton.addEventListener("click", removeForm);
-        document.addEventListener("keydown", (event) => {
+        projectForm.addEventListener("keydown", (event) => {
             if (event.key === "Escape" && formDisplayed) {
                 removeForm();
             };
@@ -126,6 +132,6 @@ export default function updateDom() {
 
     function hideErrorMessage() {
         const errorMessage = document.querySelector(".error-message");
-        errorMessage.style.display = "none";
+        document.body.removeChild(errorMessage);
     }
 }
