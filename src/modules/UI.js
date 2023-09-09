@@ -140,7 +140,11 @@ export default function updateDom() {
         taskDescription.textContent = getTaskDetails().description;
 
         const taskDate = document.createElement("p");
-        taskDate.textContent = getTaskDetails().date;
+        if(getTaskDetails().date === "") {
+            taskDate.textContent = "No due date";
+        }else {
+            taskDate.textContent = getTaskDetails().date;
+        }
 
         const taskPriority = document.createElement("p");
         taskPriority.textContent = getTaskDetails().priority;
@@ -151,11 +155,33 @@ export default function updateDom() {
         const hiddenTaskInfo = document.createElement("div");
         hiddenTaskInfo.classList.add("hidden-task-info");
 
+        const leftColumn = document.createElement("div");
+        const rightColumn = document.createElement("div");
+
+        const divOne = document.createElement("div");
+        divOne.innerHTML = `<b>Title:</b> ${taskName.textContent}`;
+
+        const divTwo = document.createElement("div");
+        divTwo.innerHTML = `<b>Date:</b> ${taskDate.textContent}`;
+
+        const divThree = document.createElement("div");
+        divThree.innerHTML = `<b>Description:</b> ${taskDescription.textContent}`;
+
+        const divFour = document.createElement("div");
+        divFour.innerHTML = `<b>Prority:</b> ${taskPriority.textContent}`;
+
+
+        leftColumn.appendChild(divOne);
+        leftColumn.appendChild(divTwo);
+
+        rightColumn.appendChild(divThree);
+        rightColumn.appendChild(divFour);
+
         visibleTaskInfo.appendChild(taskName);
         visibleTaskInfo.appendChild(taskDate);
 
-        hiddenTaskInfo.appendChild(taskDescription);
-        hiddenTaskInfo.appendChild(taskPriority);
+        hiddenTaskInfo.appendChild(leftColumn);
+        hiddenTaskInfo.appendChild(rightColumn);
 
         taskList.appendChild(visibleTaskInfo);
         taskList.appendChild(hiddenTaskInfo);

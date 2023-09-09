@@ -167,6 +167,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     padding: 2rem;
+    gap: 3rem;
 }
 
 .task-header {
@@ -243,18 +244,28 @@ textarea {
     padding: 0rem 1rem;
 }
 
+.task-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
 .task-list {
     display: flex;
     gap: 10px;
     flex-direction: column;
+    width: 70%;
 }
 
 .visible-task-info {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .hidden-task-info {
     display: flex;
     justify-content: space-around;
+    border: 1px solid black;
 }
