@@ -13,6 +13,10 @@ function createForm() {
     input.setAttribute("autocomplete", "off");
     input.placeholder = "Enter Project Title";
 
+    setTimeout(() => {
+        input.focus();
+    }, 0)
+
     const projectFormButton = document.createElement("div");
     projectFormButton.classList.add("project-form-button");
 
