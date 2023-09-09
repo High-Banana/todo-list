@@ -1,9 +1,14 @@
-export function loadForm() {
+export function loadProjectForm() {
     const projectList = document.querySelector(".project-list");
-    return projectList.before(createForm());
+    return projectList.before(createProjectForm());
 }
 
-function createForm() {
+export function loadTaskForm() {
+    const main = document.querySelector("main");
+    return main.appendChild(createTaskForm());
+}
+
+function createProjectForm() {
 
     const projectForm = document.createElement("div");
     projectForm.classList.add("project-form");
@@ -36,4 +41,46 @@ function createForm() {
     projectForm.appendChild(projectFormButton);
 
     return projectForm;
+}
+
+function createTaskForm() {
+    const popupField = document.createElement("div");
+    popupField.classList.add("popup-field");
+    popupField.innerHTML = `<form class="task-form">
+    <fieldset>
+        <div class="column-one">
+            <div class="form-element">
+                <label for="task-title">Title</label>
+                <input id="task-title">
+            </div>
+
+            <div class="form-element">
+                <label for="task-description">Description</label>
+                <textarea id="task-description"></textarea>
+            </div>
+        </div>
+
+        <div class="column-two">
+            <div class="form-element">
+                <label for="task-date">Due Date</label>
+                <input id="task-date" type="date">
+            </div>
+
+            <div class="form-element">
+                <label for="task-priority">Priority</label>
+                <select id="task-priority">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                </select>
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="form-button">
+        <button class="cancelButton">Cancel</button>
+        <button class="addButton">Add Task</button>
+    </div>
+</form>`
+    return popupField;
 }

@@ -1,11 +1,17 @@
-import { loadForm } from "./Form";
+import { loadProjectForm, loadTaskForm } from "./Form";
 import Project from "./project";
 
 export default function updateDom() {
     const addProjectButton = document.querySelector(".add-project-button");
     const projectContainer = document.querySelector(".project-container");
     const projectList = document.querySelector(".project-list");
-    let formDisplayed = false;
+    const addTaskButton = document.querySelector(".add-task-button");
+    let projectFormDisplayed = false;
+    let taskFormDisplayed = false;
+
+    if(taskFormDisplayed) {
+        console.log("ok");
+    }
 
     function getInputField() {
         const inputField = document.getElementById("project-title-input");
@@ -14,8 +20,8 @@ export default function updateDom() {
 
     function displayProjectForm() {
         addProjectButton.style.display = "none";
-        loadForm();
-        formDisplayed = true;
+        loadProjectForm, loadTaskForm();
+        projectFormDisplayed = true;
     }
 
     function checkEmptyInput() {
@@ -91,24 +97,32 @@ export default function updateDom() {
         const projectForm = document.querySelector(".project-form");
 
         getInputField().value = "";
-        formDisplayed = false;
+        projectFormDisplayed = false;
         projectForm.removeEventListener("keydown", addButtonHandler);
 
         addProjectButton.style.display = "flex";
         projectContainer.removeChild(projectForm);
     }
 
+    function createTaskList() {
+        console.log("tasks");
+    }
+
     function addButtonHandler() {
-        const addButton = document.querySelector(".addButton");
+        const addButton = document.querySelectorAll(".addButton");
         const projectForm = document.querySelector(".project-form");
-        addButton.addEventListener("click", () => {
-            if (formDisplayed) createProjectList();
-        });
-        projectForm.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" && formDisplayed) {
-                createProjectList();
-            };
-        });
+        addButton.forEach(button => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                if (projectFormDisplayed) createProjectList();
+                if (taskFormDisplayed) createTaskList();
+            });
+            projectForm.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" && projectFormDisplayed) {
+                    createProjectList();
+                };
+            });
+        })
     }
 
     function cancelButtonHandler() {
@@ -116,7 +130,7 @@ export default function updateDom() {
         const projectForm = document.querySelector(".project-form");
         cancelButton.addEventListener("click", removeForm);
         projectForm.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" && formDisplayed) {
+            if (event.key === "Escape" && projectFormDisplayed) {
                 removeForm();
             };
         });
@@ -142,20 +156,18 @@ export default function updateDom() {
     }
 
     function displayTaskForm() {
-        const taskContainer = document.querySelector(".task-container");
-        const formContainer = document.createElement("div");
-        const legendElem = document.createElement("legend");
-        legendElem.textContent = ""
-        const formContent = document.createElement("form");
-        
-        taskContainer.appendChild(formContainer);
-        formContainer.appendChild(formContent);
+        loadTaskForm();
+        // popupField.style.display = "flex";
     }
-    // displayTaskForm();
 
     addProjectButton.addEventListener("click", () => {
         displayProjectForm();
         addButtonHandler();
         cancelButtonHandler();
     });
+
+    addTaskButton.addEventListener("click", () => {
+        taskFormDisplayed = true;
+        displayTaskForm();
+    })
 }
