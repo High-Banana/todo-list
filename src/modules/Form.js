@@ -11,6 +11,7 @@ function createForm() {
     const input = document.createElement("input");
     input.setAttribute("id", "project-title-input");
     input.setAttribute("autocomplete", "off");
+    input.setAttribute("maxlength", "12");
     input.placeholder = "Enter Project Title";
 
     setTimeout(() => {

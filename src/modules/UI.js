@@ -7,38 +7,51 @@ export default function updateDom() {
     const projectList = document.querySelector(".project-list");
     let formDisplayed = false;
 
+    function getInputField() {
+        const inputField = document.getElementById("project-title-input");
+        return inputField;
+    }
+
     function displayProjectForm() {
         addProjectButton.style.display = "none";
         loadForm();
         formDisplayed = true;
     }
 
-    function checkInvalidInput() {
-        const inputField = document.getElementById("project-title-input");
-        inputField.classList.add("invalid");
-            displayEmptyErrorMessage();
-            setTimeout(hideErrorMessage, 3000);
-            inputField.addEventListener("input", () => {
-                if (inputField.value === "") {
-                    inputField.classList.add("invalid");
-                } else if (inputField.value !== "") {
-                    inputField.classList.remove("invalid");
-                }
-            })
+    function checkEmptyInput() {
+        getInputField().classList.add("invalid");
+        displayEmptyErrorMessage();
+        setTimeout(hideErrorMessage, 3000);
+        getInputField().addEventListener("input", () => {
+            if (getInputField().value === "") {
+                getInputField().classList.add("invalid");
+            } else if (getInputField().value !== "") {
+                getInputField().classList.remove("invalid");
+            }
+        })
+    }
+
+    function checkLengthyInput() {
+        displayLengthErrorMessage();
+        setTimeout(hideErrorMessage, 3000);
+        getInputField().addEventListener("input", () => {
+            if (getInputField().value.length <= 12) {
+                getInputField().classList.remove("invalid");
+            } else if (getInputField().value.length > 12) {
+                getInputField().classList.add("invalid");
+            }
+        })
+        getInputField().classList.add("invalid");
     }
 
     function createProjectList() {
-        const inputField = document.getElementById("project-title-input");
-
-        if (inputField.value === "") {
-            checkInvalidInput();
+        if (getInputField().value === "") {
+            checkEmptyInput();
             return;
         };
 
-        if (inputField.value.length > 12) {
-            displayLengthErrorMessage();
-            setTimeout(hideErrorMessage, 3000);
-            inputField.classList.add("invalid");
+        if (getInputField().value.length > 12) {
+            checkLengthyInput();
             return;
         }
 
@@ -59,7 +72,7 @@ export default function updateDom() {
 
         leftSide.appendChild(iconSpan);
         leftSide.appendChild(text);
-        
+
         projectName.appendChild(leftSide);
         projectName.appendChild(rightSide);
 
@@ -67,7 +80,7 @@ export default function updateDom() {
         projectContainer.appendChild(projectList);
 
         function getProjectTitle() {
-            const project = new Project(inputField.value);
+            const project = new Project(getInputField().value);
             project.setProjectList(project.title);
             removeForm();
             return project.title;
@@ -76,9 +89,8 @@ export default function updateDom() {
 
     function removeForm() {
         const projectForm = document.querySelector(".project-form");
-        const inputField = document.getElementById("project-title-input");
 
-        inputField.value = "";
+        getInputField().value = "";
         formDisplayed = false;
         projectForm.removeEventListener("keydown", addButtonHandler);
 
