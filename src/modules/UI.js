@@ -1,5 +1,6 @@
 import { loadProjectForm, loadTaskForm } from "./Form";
 import Project from "./project";
+import Task from "./Tasks";
 
 export default function updateDom() {
     const addProjectButton = document.querySelector(".add-project-button");
@@ -61,6 +62,13 @@ export default function updateDom() {
             return;
         }
 
+        function getProjectTitle() {
+            const project = new Project(getInputField().value);
+            project.setProjectList(project.title);
+            removeForm();
+            return project.title;
+        }
+
         const projectName = document.createElement("button");
 
         const leftSide = document.createElement("div");
@@ -84,13 +92,6 @@ export default function updateDom() {
 
         projectList.appendChild(projectName);
         projectContainer.appendChild(projectList);
-
-        function getProjectTitle() {
-            const project = new Project(getInputField().value);
-            project.setProjectList(project.title);
-            removeForm();
-            return project.title;
-        }
     }
 
     function removeForm() {
@@ -116,7 +117,49 @@ export default function updateDom() {
     }
 
     function createTaskList() {
-        console.log("tasks");
+        const taskContainer = document.querySelector(".task-list-container");
+        const taskList = document.createElement("div");
+        taskList.classList.add("task-list");
+        const taskTitleInput = document.getElementById("task-title");
+        const taskDescriptionInput = document.getElementById("task-description");
+        const taskDateInput = document.getElementById("task-date");
+        const taskPriorityInput = document.getElementById("task-priority");
+
+        function getTaskDetails(){
+            const task = new Task(taskTitleInput.value, taskDescriptionInput.value, taskDateInput.value, taskPriorityInput.value);
+            task.setTaskList(task.title, task.description, task.date, task.priority);  
+            removeForm();
+            return task;
+        }
+        getTaskDetails();
+
+        const taskName = document.createElement("p");
+        taskName.textContent = getTaskDetails().title;
+
+        const taskDescription = document.createElement("p");
+        taskDescription.textContent = getTaskDetails().description;
+
+        const taskDate = document.createElement("p");
+        taskDate.textContent = getTaskDetails().date;
+
+        const taskPriority = document.createElement("p");
+        taskPriority.textContent = getTaskDetails().priority;
+
+        const visibleTaskInfo = document.createElement("div");
+        visibleTaskInfo.classList.add("visible-task-info");
+
+        const hiddenTaskInfo = document.createElement("div");
+        hiddenTaskInfo.classList.add("hidden-task-info");
+
+        visibleTaskInfo.appendChild(taskName);
+        visibleTaskInfo.appendChild(taskDate);
+
+        hiddenTaskInfo.appendChild(taskDescription);
+        hiddenTaskInfo.appendChild(taskPriority);
+
+        taskList.appendChild(visibleTaskInfo);
+        taskList.appendChild(hiddenTaskInfo);
+        taskContainer.appendChild(taskList);
     }
 
     function displayTaskForm() {

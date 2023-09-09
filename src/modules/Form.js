@@ -51,7 +51,7 @@ function createTaskForm() {
         <div class="column-one">
             <div class="form-element">
                 <label for="task-title">Title</label>
-                <input id="task-title">
+                <input id="task-title" autocomplete = "off">
             </div>
 
             <div class="form-element">

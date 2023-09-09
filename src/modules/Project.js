@@ -6,6 +6,5 @@ export default class Project {
 
     setProjectList(projectTitle) {
         projectList.push(projectTitle);
-        console.log(projectList);
     }
 }
