@@ -146,7 +146,7 @@ button:hover {
     width: 100%;
 }
 
-.project-list button{
+.project-list button {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -158,7 +158,7 @@ button:hover {
     gap: 1.2rem;
 }
 
-.project-right-side button{
+.project-right-side button {
     display: flex;
     align-items: center;
 }
@@ -213,13 +213,16 @@ fieldset {
     border: none;
 }
 
-.column-one, .column-two {
+.column-one,
+.column-two {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.column-one input, .column-two input, select {
+.column-one input,
+.column-two input,
+select {
     padding: var(--input-padding);
     font-size: 1rem;
     transition: .3s;
@@ -273,6 +276,30 @@ textarea {
     gap: 10px;
     flex-wrap: wrap;
     padding: 1rem;
+}
+
+.hidden-task-info.show {
+    display: grid;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
 
 .task-left-column {
