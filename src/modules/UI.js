@@ -124,7 +124,7 @@ export default function updateDom() {
         const taskDescriptionInput = document.getElementById("task-description");
         const taskDateInput = document.getElementById("task-date");
         const taskPriorityInput = document.getElementById("task-priority");
-        
+
         const task = new Task(taskTitleInput.value, taskDescriptionInput.value, taskDateInput.value, taskPriorityInput.value);
         task.setTaskList(task.title, task.description, task.date, task.priority);
 
@@ -213,7 +213,9 @@ export default function updateDom() {
         taskList.appendChild(hiddenTaskInfo);
         taskContainer.appendChild(taskList);
 
-        visibleTaskInfo.addEventListener("click", displayHiddenTaskInfo);
+        taskList.addEventListener("click", () => {
+            displayHiddenTaskInfo(taskList);
+        });
     }
 
     function displayTaskForm() {
@@ -221,14 +223,13 @@ export default function updateDom() {
         taskFormDisplayed = true;
     }
 
-    function displayHiddenTaskInfo() {
-        // const visibleTaskInfo = document.querySelector(".visible-task-info");
-        const hiddenTaskInfo = document.querySelector(".hidden-task-info");
+    function displayHiddenTaskInfo(element) {
+        const hiddenTaskInfo = element.querySelector(".hidden-task-info");
         hiddenTaskInfo.classList.toggle("show");
-        if (hiddenTaskInfo.classList.contains("show")) {
-            hiddenTaskInfo.style.display = "grid";
-        } else {
-            hiddenTaskInfo.style.display = "none";
+        if(hiddenTaskInfo.classList.contains("show")){
+            hiddenTaskInfo.style.animation = "fadeIn .7s";
+        }else {
+            hiddenTaskInfo.style.animation = "fadeOut .7s";
         }
     }
 
