@@ -15,5 +15,6 @@ export default class Task {
             "due-date": taskDate,
             "priority": taskPriority
         });
+        console.log(taskList);
     }
 }

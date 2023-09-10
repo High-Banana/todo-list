@@ -124,14 +124,14 @@ export default function updateDom() {
         const taskDescriptionInput = document.getElementById("task-description");
         const taskDateInput = document.getElementById("task-date");
         const taskPriorityInput = document.getElementById("task-priority");
+        
+        const task = new Task(taskTitleInput.value, taskDescriptionInput.value, taskDateInput.value, taskPriorityInput.value);
+        task.setTaskList(task.title, task.description, task.date, task.priority);
 
-        function getTaskDetails(){
-            const task = new Task(taskTitleInput.value, taskDescriptionInput.value, taskDateInput.value, taskPriorityInput.value);
-            task.setTaskList(task.title, task.description, task.date, task.priority);  
+        function getTaskDetails() {
             removeForm();
             return task;
         }
-        getTaskDetails();
 
         const taskName = document.createElement("p");
         taskName.textContent = getTaskDetails().title;
@@ -140,9 +140,9 @@ export default function updateDom() {
         taskDescription.textContent = getTaskDetails().description;
 
         const taskDate = document.createElement("p");
-        if(getTaskDetails().date === "") {
+        if (getTaskDetails().date === "") {
             taskDate.textContent = "No due date";
-        }else {
+        } else {
             taskDate.textContent = getTaskDetails().date;
         }
 
@@ -156,7 +156,10 @@ export default function updateDom() {
         hiddenTaskInfo.classList.add("hidden-task-info");
 
         const leftColumn = document.createElement("div");
+        leftColumn.classList.add("task-left-column");
+
         const rightColumn = document.createElement("div");
+        rightColumn.classList.add("task-right-column");
 
         const divOne = document.createElement("div");
         divOne.innerHTML = `<b>Title:</b> ${taskName.textContent}`;
@@ -170,6 +173,29 @@ export default function updateDom() {
         const divFour = document.createElement("div");
         divFour.innerHTML = `<b>Prority:</b> ${taskPriority.textContent}`;
 
+        const taskEditButton = document.createElement("button");
+        taskEditButton.innerHTML = `<i class= "fa-solid fa-pencil"></i>`;
+
+        const taskPriorityButton = document.createElement("button");
+        taskPriorityButton.innerHTML = `<i class="fa-solid fa-flag"></i>`;
+
+        if (getTaskDetails().priority === "Low") {
+            taskPriorityButton.style.color = "green";
+        } else if (getTaskDetails().priority === "Medium") {
+            taskPriorityButton.style.color = "orange";
+        } else if (getTaskDetails().priority === "High") {
+            taskPriorityButton.style.color = "red";
+        }
+
+        const taskDeleteButton = document.createElement("button");
+        taskDeleteButton.innerHTML = `<i class= "fa-solid fa-trash"></i>`;
+
+        const taskListController = document.createElement("div");
+        taskListController.classList.add("task-list-controller");
+        taskListController.appendChild(taskEditButton);
+        taskListController.appendChild(taskPriorityButton);
+        taskListController.appendChild(taskDeleteButton);
+
 
         leftColumn.appendChild(divOne);
         leftColumn.appendChild(divTwo);
@@ -178,7 +204,7 @@ export default function updateDom() {
         rightColumn.appendChild(divFour);
 
         visibleTaskInfo.appendChild(taskName);
-        visibleTaskInfo.appendChild(taskDate);
+        visibleTaskInfo.appendChild(taskListController);
 
         hiddenTaskInfo.appendChild(leftColumn);
         hiddenTaskInfo.appendChild(rightColumn);
@@ -186,11 +212,24 @@ export default function updateDom() {
         taskList.appendChild(visibleTaskInfo);
         taskList.appendChild(hiddenTaskInfo);
         taskContainer.appendChild(taskList);
+
+        visibleTaskInfo.addEventListener("click", displayHiddenTaskInfo);
     }
 
     function displayTaskForm() {
         loadTaskForm();
         taskFormDisplayed = true;
+    }
+
+    function displayHiddenTaskInfo() {
+        // const visibleTaskInfo = document.querySelector(".visible-task-info");
+        const hiddenTaskInfo = document.querySelector(".hidden-task-info");
+        hiddenTaskInfo.classList.toggle("show");
+        if (hiddenTaskInfo.classList.contains("show")) {
+            hiddenTaskInfo.style.display = "grid";
+        } else {
+            hiddenTaskInfo.style.display = "none";
+        }
     }
 
     function addButtonHandler() {

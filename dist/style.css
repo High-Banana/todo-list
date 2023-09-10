@@ -260,12 +260,35 @@ textarea {
 
 .visible-task-info {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid black;
 }
 
 .hidden-task-info {
-    display: flex;
-    justify-content: space-around;
+    display: none;
+    grid-template-columns: 18rem 18rem;
     border: 1px solid black;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+.task-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.task-right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-wrap: break-word;
+}
+
+.task-list-controller {
+    display: flex;
+    gap: 10px;
 }
