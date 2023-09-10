@@ -116,6 +116,72 @@ export default function updateDom() {
         }
     }
 
+    // function taskTitleErrorMessage() {
+    //     const taskTitleInput = document.getElementById("task-title");
+    //     const titleErrorMessage = document.createElement("span");
+
+    //     taskTitleInput.style.border = "1px solid red";
+    //     titleErrorMessage.classList.add("invalid-message");
+    //     titleErrorMessage.textContent = "Task title is required";
+
+    //     taskTitleInput.after(titleErrorMessage);
+    // }
+
+    // function descriptionErrorMessage() {
+    //     const taskDescriptionInput = document.getElementById("task-description");
+    //     const titleErrorMessage = document.createElement("span");
+
+    //     taskDescriptionInput.style.border = "1px solid red";
+    //     titleErrorMessage.classList.add("invalid-message");
+    //     titleErrorMessage.textContent = "Task description is required";
+
+    //     taskDescriptionInput.after(titleErrorMessage);
+    // }
+
+    function checkInvalidTaskInput() {
+        const formElement = document.querySelector(".form-element");
+        const taskTitleInput = document.getElementById("task-title");
+        const taskDescriptionInput = document.getElementById("task-description");
+        const titleErrorMessage = document.createElement("span");
+        const descriptionErrorMessage = document.createElement("span");
+
+        if (taskTitleInput.classList.contains("invalid") || taskDescriptionInput.classList.contains("invalid")) return;
+
+        titleErrorMessage.textContent = "Task title is required";
+        titleErrorMessage.classList.add("invalid-message");
+        taskTitleInput.after(titleErrorMessage);
+        taskTitleInput.classList.add("invalid");
+
+        descriptionErrorMessage.textContent = "Task description is required";
+        descriptionErrorMessage.classList.add("invalid-message");
+        taskDescriptionInput.after(descriptionErrorMessage);
+        taskDescriptionInput.classList.add("invalid");
+
+        taskTitleInput.addEventListener("input", () => {
+            if (taskTitleInput.value === "") {
+                taskTitleInput.classList.add("invalid");
+                taskTitleInput.after(titleErrorMessage);
+            } else {
+                if (taskTitleInput.classList.contains("invalid")) {
+                    taskTitleInput.classList.remove("invalid");
+                    formElement.removeChild(titleErrorMessage);
+                }
+            }
+        })
+
+        taskDescriptionInput.addEventListener("input", () => {
+            if (taskDescriptionInput.value === "") {
+                taskDescriptionInput.classList.add("invalid");
+                taskDescriptionInput.after(descriptionErrorMessage);
+            } else {
+                if (taskDescriptionInput.classList.contains("invalid")) {
+                    taskDescriptionInput.classList.remove("invalid");
+                    formElement.removeChild(descriptionErrorMessage);
+                }
+            }
+        })
+    }
+
     function createTaskList() {
         const taskContainer = document.querySelector(".task-list-container");
         const taskList = document.createElement("div");
@@ -124,6 +190,11 @@ export default function updateDom() {
         const taskDescriptionInput = document.getElementById("task-description");
         const taskDateInput = document.getElementById("task-date");
         const taskPriorityInput = document.getElementById("task-priority");
+
+        if (taskTitleInput.value === "" || taskDescriptionInput.value === "") {
+            checkInvalidTaskInput();
+            return;
+        }
 
         const task = new Task(taskTitleInput.value, taskDescriptionInput.value, taskDateInput.value, taskPriorityInput.value);
         task.setTaskList(task.title, task.description, task.date, task.priority);
@@ -226,11 +297,6 @@ export default function updateDom() {
     function displayHiddenTaskInfo(element) {
         const hiddenTaskInfo = element.querySelector(".hidden-task-info");
         hiddenTaskInfo.classList.toggle("show");
-        if(hiddenTaskInfo.classList.contains("show")){
-            hiddenTaskInfo.style.animation = "fadeIn .7s";
-        }else {
-            hiddenTaskInfo.style.animation = "fadeOut .7s";
-        }
     }
 
     function addButtonHandler() {
@@ -272,22 +338,22 @@ export default function updateDom() {
     }
 
     function displayEmptyErrorMessage() {
-        const errorMessage = document.createElement("p");
-        errorMessage.textContent = "Project title cannot be empty";
-        errorMessage.classList.add("error-message");
-        document.body.appendChild(errorMessage);
+        const titleErrorMessage = document.createElement("p");
+        titleErrorMessage.textContent = "Project title cannot be empty";
+        titleErrorMessage.classList.add("error-message");
+        document.body.appendChild(titleErrorMessage);
     }
 
     function displayLengthErrorMessage() {
-        const errorMessage = document.createElement("p");
-        errorMessage.textContent = "Project title should not be more than 12 letters";
-        errorMessage.classList.add("error-message");
-        document.body.appendChild(errorMessage);
+        const titleErrorMessage = document.createElement("p");
+        titleErrorMessage.textContent = "Project title should not be more than 12 letters";
+        titleErrorMessage.classList.add("error-message");
+        document.body.appendChild(titleErrorMessage);
     }
 
     function hideErrorMessage() {
-        const errorMessage = document.querySelector(".error-message");
-        document.body.removeChild(errorMessage);
+        const titleErrorMessage = document.querySelector(".error-message");
+        document.body.removeChild(titleErrorMessage);
     }
 
     addProjectButton.addEventListener("click", () => {

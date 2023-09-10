@@ -213,6 +213,21 @@ fieldset {
     border: none;
 }
 
+fieldset input, textarea, select {
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+fieldset input:focus, textarea:focus {
+    box-shadow: 0px 0px 3px 3px rgb(0, 224, 49);
+}
+
+fieldset input.invalid, textarea.invalid {
+    border: 1px solid red;
+    box-shadow: 0px 0px 3px 3px rgb(255, 58, 58);
+}
+
+
 .column-one,
 .column-two {
     display: flex;
@@ -280,6 +295,7 @@ textarea {
 
 .hidden-task-info.show {
     display: grid;
+    animation: fadeIn .7s;
 }
 
 @keyframes fadeIn {
@@ -289,16 +305,6 @@ textarea {
 
     to {
         opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
     }
 }
 
@@ -318,4 +324,9 @@ textarea {
 .task-list-controller {
     display: flex;
     gap: 10px;
+}
+
+.invalid-message {
+    color: red;
+    font-size: 0.8rem;
 }
