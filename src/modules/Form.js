@@ -49,24 +49,24 @@ function createTaskForm() {
     popupField.innerHTML = `<form class="task-form">
     <fieldset>
         <div class="column-one">
-            <div class="form-element">
+            <div class="form-element title">
                 <label for="task-title">Title</label>
                 <input id="task-title" autocomplete = "off">
             </div>
 
-            <div class="form-element">
+            <div class="form-element description">
                 <label for="task-description">Description</label>
                 <textarea id="task-description"></textarea>
             </div>
         </div>
 
         <div class="column-two">
-            <div class="form-element">
+            <div class="form-element date">
                 <label for="task-date">Due Date</label>
                 <input id="task-date" type="date">
             </div>
 
-            <div class="form-element">
+            <div class="form-element priority">
                 <label for="task-priority">Priority</label>
                 <select id="task-priority">
                     <option>Low</option>

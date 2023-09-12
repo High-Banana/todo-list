@@ -1,5 +1,5 @@
 import { loadProjectForm, loadTaskForm } from "./Form";
-import Project from "./project";
+import Project from "./Project";
 import Task from "./Tasks";
 
 export default function updateDom() {
@@ -139,7 +139,7 @@ export default function updateDom() {
     // }
 
     function checkInvalidTaskInput() {
-        const formElement = document.querySelector(".form-element");
+        const formElement = document.querySelectorAll(".form-element");
         const taskTitleInput = document.getElementById("task-title");
         const taskDescriptionInput = document.getElementById("task-description");
         const titleErrorMessage = document.createElement("span");
@@ -164,7 +164,11 @@ export default function updateDom() {
             } else {
                 if (taskTitleInput.classList.contains("invalid")) {
                     taskTitleInput.classList.remove("invalid");
-                    formElement.removeChild(titleErrorMessage);
+                    formElement.forEach((element) => {
+                        if(element.classList.contains("title")) {
+                            element.removeChild(titleErrorMessage);
+                        }
+                    })
                 }
             }
         })
@@ -176,7 +180,12 @@ export default function updateDom() {
             } else {
                 if (taskDescriptionInput.classList.contains("invalid")) {
                     taskDescriptionInput.classList.remove("invalid");
-                    formElement.removeChild(descriptionErrorMessage);
+                    formElement.forEach((element) => {
+                        if(element.classList.contains("description")) {
+                            element.removeChild(descriptionErrorMessage);
+                        }
+                    })
+                    // formElement.removeChild(descriptionErrorMessage);
                 }
             }
         })
