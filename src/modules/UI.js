@@ -334,7 +334,7 @@ export default function updateDom() {
     }
 
     const taskListContainer = document.querySelector(".task-list-container");
-    const observer = new MutationObserver((mutationList, observer) => {
+    const observer = new MutationObserver((mutationList) => {
         mutationList.forEach((mutation) => {
             if (mutation.type === "childList") {
                 mutation.addedNodes.forEach((element) => {
@@ -349,7 +349,7 @@ export default function updateDom() {
         })
     })
     observer.observe(taskListContainer, {
-        childList: true,
+        childList: true
     })
 
     function editButtonHandler(event) {
@@ -359,8 +359,8 @@ export default function updateDom() {
         const taskTitle = event.target.parentNode.parentNode.parentNode.querySelector(".task-title");
         const editInputField = document.getElementById("task-title");
         editInputField.value = taskTitle.textContent;
-        console.log(editInputField.value);
-        
+        editFormDisplayed = true;
+
         event.stopPropagation();
     }
 
