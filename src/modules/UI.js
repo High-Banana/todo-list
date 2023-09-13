@@ -1,4 +1,4 @@
-import { loadProjectForm, loadTaskForm } from "./Form";
+import { loadProjectForm, loadTaskForm, loadEditForm } from "./Form";
 import Project from "./Project";
 import Task from "./Tasks";
 
@@ -9,6 +9,8 @@ export default function updateDom() {
     const addTaskButton = document.querySelector(".add-task-button");
     let projectFormDisplayed = false;
     let taskFormDisplayed = false;
+    let editFormDisplayed = false;
+    let taskListCreated = false;
 
     if (taskFormDisplayed) {
         console.log("ok");
@@ -107,36 +109,15 @@ export default function updateDom() {
             projectContainer.removeChild(projectForm);
         }
 
-        if (taskFormDisplayed) {
+        if (taskFormDisplayed || editFormDisplayed) {
             const popupField = document.querySelector(".popup-field");
             const main = document.querySelector("main");
             taskFormDisplayed = false;
+            editFormDisplayed = false;
 
             main.removeChild(popupField);
         }
     }
-
-    // function taskTitleErrorMessage() {
-    //     const taskTitleInput = document.getElementById("task-title");
-    //     const titleErrorMessage = document.createElement("span");
-
-    //     taskTitleInput.style.border = "1px solid red";
-    //     titleErrorMessage.classList.add("invalid-message");
-    //     titleErrorMessage.textContent = "Task title is required";
-
-    //     taskTitleInput.after(titleErrorMessage);
-    // }
-
-    // function descriptionErrorMessage() {
-    //     const taskDescriptionInput = document.getElementById("task-description");
-    //     const titleErrorMessage = document.createElement("span");
-
-    //     taskDescriptionInput.style.border = "1px solid red";
-    //     titleErrorMessage.classList.add("invalid-message");
-    //     titleErrorMessage.textContent = "Task description is required";
-
-    //     taskDescriptionInput.after(titleErrorMessage);
-    // }
 
     function checkInvalidTaskInput() {
         const formElement = document.querySelectorAll(".form-element");
@@ -165,7 +146,7 @@ export default function updateDom() {
                 if (taskTitleInput.classList.contains("invalid")) {
                     taskTitleInput.classList.remove("invalid");
                     formElement.forEach((element) => {
-                        if(element.classList.contains("title")) {
+                        if (element.classList.contains("title")) {
                             element.removeChild(titleErrorMessage);
                         }
                     })
@@ -181,7 +162,7 @@ export default function updateDom() {
                 if (taskDescriptionInput.classList.contains("invalid")) {
                     taskDescriptionInput.classList.remove("invalid");
                     formElement.forEach((element) => {
-                        if(element.classList.contains("description")) {
+                        if (element.classList.contains("description")) {
                             element.removeChild(descriptionErrorMessage);
                         }
                     })
@@ -214,6 +195,7 @@ export default function updateDom() {
         }
 
         const taskName = document.createElement("p");
+        taskName.classList.add("task-title");
         taskName.textContent = getTaskDetails().title;
 
         const taskDescription = document.createElement("p");
@@ -254,6 +236,7 @@ export default function updateDom() {
         divFour.innerHTML = `<b>Prority:</b> ${taskPriority.textContent}`;
 
         const taskEditButton = document.createElement("button");
+        taskEditButton.classList.add("task-edit-button");
         taskEditButton.innerHTML = `<i class= "fa-solid fa-pencil"></i>`;
 
         const taskPriorityButton = document.createElement("button");
@@ -270,6 +253,10 @@ export default function updateDom() {
         const taskDeleteButton = document.createElement("button");
         taskDeleteButton.innerHTML = `<i class= "fa-solid fa-trash"></i>`;
 
+        const taskLeft = document.createElement("div");
+        taskLeft.classList.add("task-left");
+        taskLeft.appendChild(taskName);
+
         const taskListController = document.createElement("div");
         taskListController.classList.add("task-list-controller");
         taskListController.appendChild(taskEditButton);
@@ -283,7 +270,7 @@ export default function updateDom() {
         rightColumn.appendChild(divThree);
         rightColumn.appendChild(divFour);
 
-        visibleTaskInfo.appendChild(taskName);
+        visibleTaskInfo.appendChild(taskLeft);
         visibleTaskInfo.appendChild(taskListController);
 
         hiddenTaskInfo.appendChild(leftColumn);
@@ -293,19 +280,16 @@ export default function updateDom() {
         taskList.appendChild(hiddenTaskInfo);
         taskContainer.appendChild(taskList);
 
-        taskList.addEventListener("click", () => {
+        visibleTaskInfo.addEventListener("click", () => {
             displayHiddenTaskInfo(taskList);
         });
+
+        taskListController.removeEventListener("click", displayHiddenTaskInfo);
     }
 
     function displayTaskForm() {
         loadTaskForm();
         taskFormDisplayed = true;
-    }
-
-    function displayHiddenTaskInfo(element) {
-        const hiddenTaskInfo = element.querySelector(".hidden-task-info");
-        hiddenTaskInfo.classList.toggle("show");
     }
 
     function addButtonHandler() {
@@ -315,8 +299,20 @@ export default function updateDom() {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
                 if (projectFormDisplayed) createProjectList();
-                if (taskFormDisplayed) createTaskList();
+                if (taskFormDisplayed) {
+                    createTaskList();
+                    taskListCreated = true;
+                }
             });
+
+            if (taskListCreated) {
+                const taskEditButton = document.querySelectorAll(".task-edit-button");
+                taskEditButton.forEach((button) => {
+                    button.addEventListener("click", (event) => {
+                        editButtonHandler(event);
+                    })
+                })
+            }
 
             if (projectFormDisplayed) {
                 projectForm.addEventListener("keydown", (event) => {
@@ -346,6 +342,19 @@ export default function updateDom() {
         })
     }
 
+    function editButtonHandler(event) {
+        loadEditForm();
+        addButtonHandler();
+        cancelButtonHandler();
+        editFormDisplayed = true;
+        const taskTitle = event.target.parentNode.parentNode.querySelectorAll(".task-title");
+        const editInputField = document.getElementById("task-title");
+        taskTitle.forEach((element) => {
+            editInputField.value = element.textContent;
+        })
+        event.stopPropagation();
+    }
+
     function displayEmptyErrorMessage() {
         const titleErrorMessage = document.createElement("p");
         titleErrorMessage.textContent = "Project title cannot be empty";
@@ -363,6 +372,11 @@ export default function updateDom() {
     function hideErrorMessage() {
         const titleErrorMessage = document.querySelector(".error-message");
         document.body.removeChild(titleErrorMessage);
+    }
+
+    function displayHiddenTaskInfo(element) {
+        const hiddenTaskInfo = element.querySelector(".hidden-task-info");
+        hiddenTaskInfo.classList.toggle("show");
     }
 
     addProjectButton.addEventListener("click", () => {

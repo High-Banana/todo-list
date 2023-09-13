@@ -282,6 +282,7 @@ textarea {
     flex-wrap: wrap;
     align-items: center;
     border-bottom: 1px solid black;
+    cursor: pointer;
 }
 
 .hidden-task-info {

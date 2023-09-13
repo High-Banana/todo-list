@@ -8,6 +8,11 @@ export function loadTaskForm() {
     return main.appendChild(createTaskForm());
 }
 
+export function loadEditForm() {
+    const main = document.querySelector("main");
+    return main.appendChild(createEditForm());
+}
+
 function createProjectForm() {
 
     const projectForm = document.createElement("div");
@@ -47,6 +52,48 @@ function createTaskForm() {
     const popupField = document.createElement("div");
     popupField.classList.add("popup-field");
     popupField.innerHTML = `<form class="task-form">
+    <fieldset>
+        <div class="column-one">
+            <div class="form-element title">
+                <label for="task-title">Title</label>
+                <input id="task-title" autocomplete = "off">
+            </div>
+
+            <div class="form-element description">
+                <label for="task-description">Description</label>
+                <textarea id="task-description"></textarea>
+            </div>
+        </div>
+
+        <div class="column-two">
+            <div class="form-element date">
+                <label for="task-date">Due Date</label>
+                <input id="task-date" type="date">
+            </div>
+
+            <div class="form-element priority">
+                <label for="task-priority">Priority</label>
+                <select id="task-priority">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                </select>
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="form-button">
+        <button class="cancelButton">Cancel</button>
+        <button class="addButton">Add Task</button>
+    </div>
+</form>`
+    return popupField;
+}
+
+function createEditForm() {
+    const popupField = document.createElement("div");
+    popupField.classList.add("popup-field");
+    popupField.innerHTML = `<form class="edit-form">
     <fieldset>
         <div class="column-one">
             <div class="form-element title">
