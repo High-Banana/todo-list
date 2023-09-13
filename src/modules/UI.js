@@ -305,15 +305,6 @@ export default function updateDom() {
                 }
             });
 
-            if (taskListCreated) {
-                const taskEditButton = document.querySelectorAll(".task-edit-button");
-                taskEditButton.forEach((button) => {
-                    button.addEventListener("click", (event) => {
-                        editButtonHandler(event);
-                    })
-                })
-            }
-
             if (projectFormDisplayed) {
                 projectForm.addEventListener("keydown", (event) => {
                     if (event.key === "Enter" && projectFormDisplayed) {
@@ -342,16 +333,34 @@ export default function updateDom() {
         })
     }
 
+    const taskListContainer = document.querySelector(".task-list-container");
+    const observer = new MutationObserver((mutationList, observer) => {
+        mutationList.forEach((mutation) => {
+            if (mutation.type === "childList") {
+                mutation.addedNodes.forEach((element) => {
+                    if (element.querySelector(".task-title")) { 
+                        const editButton = element.querySelector(".task-edit-button");
+                        editButton.addEventListener("click", (event) => {
+                            editButtonHandler(event);
+                        })
+                    }
+                })
+            }
+        })
+    })
+    observer.observe(taskListContainer, {
+        childList: true,
+    })
+
     function editButtonHandler(event) {
         loadEditForm();
         addButtonHandler();
         cancelButtonHandler();
-        editFormDisplayed = true;
-        const taskTitle = event.target.parentNode.parentNode.querySelectorAll(".task-title");
+        const taskTitle = event.target.parentNode.parentNode.parentNode.querySelector(".task-title");
         const editInputField = document.getElementById("task-title");
-        taskTitle.forEach((element) => {
-            editInputField.value = element.textContent;
-        })
+        editInputField.value = taskTitle.textContent;
+        console.log(editInputField.value);
+        
         event.stopPropagation();
     }
 
