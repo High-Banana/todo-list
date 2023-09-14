@@ -199,6 +199,7 @@ export default function updateDom() {
         taskName.textContent = getTaskDetails().title;
 
         const taskDescription = document.createElement("p");
+        taskDescription.classList.add("task-description");
         taskDescription.textContent = getTaskDetails().description;
 
         const taskDate = document.createElement("p");
@@ -224,14 +225,28 @@ export default function updateDom() {
         rightColumn.classList.add("task-right-column");
 
         const divOne = document.createElement("div");
-        divOne.innerHTML = `<b>Title:</b> ${taskName.textContent}`;
+        const divOneTitle = document.createElement("span");
+        divOneTitle.style.fontWeight = "bold";
+        divOneTitle.textContent = "Title: ";
+        const divOneContent = document.createElement("span");
+        divOneContent.textContent = taskName.textContent;
+        divOne.appendChild(divOneTitle);
+        divOne.appendChild(divOneContent);
 
         const divTwo = document.createElement("div");
         divTwo.innerHTML = `<b>Date:</b> ${taskDate.textContent}`;
 
         const divThree = document.createElement("div");
-        divThree.innerHTML = `<b>Description:</b> ${taskDescription.textContent}`;
-
+        divThree.classList.add("task-description-info");
+        const divThreeTitle = document.createElement("span");
+        divThreeTitle.style.fontWeight = "bold";
+        divThreeTitle.textContent = "Description: ";
+        const divThreeContent = document.createElement("span");
+        divThreeContent.classList.add("task-description");
+        divThreeContent.textContent = taskDescription.textContent;
+        divThree.appendChild(divThreeTitle);
+        divThree.appendChild(divThreeContent);
+        
         const divFour = document.createElement("div");
         divFour.innerHTML = `<b>Prority:</b> ${taskPriority.textContent}`;
 
@@ -251,6 +266,7 @@ export default function updateDom() {
         }
 
         const taskDeleteButton = document.createElement("button");
+        taskDeleteButton.classList.add("task-delete-button");
         taskDeleteButton.innerHTML = `<i class= "fa-solid fa-trash"></i>`;
 
         const taskLeft = document.createElement("div");
@@ -338,10 +354,14 @@ export default function updateDom() {
         mutationList.forEach((mutation) => {
             if (mutation.type === "childList") {
                 mutation.addedNodes.forEach((element) => {
-                    if (element.querySelector(".task-title")) { 
+                    if (element.querySelector(".task-title")) {
                         const editButton = element.querySelector(".task-edit-button");
                         editButton.addEventListener("click", (event) => {
                             editButtonHandler(event);
+                        })
+                        const deleteButton = element.querySelector(".task-delete-button");
+                        deleteButton.addEventListener("click", (event) => {
+                            deleteButtonHandler(event);
                         })
                     }
                 })
@@ -357,11 +377,27 @@ export default function updateDom() {
         addButtonHandler();
         cancelButtonHandler();
         const taskTitle = event.target.parentNode.parentNode.parentNode.querySelector(".task-title");
-        const editInputField = document.getElementById("task-title");
-        editInputField.value = taskTitle.textContent;
+        const taskDescription = event.target.parentNode.parentNode.parentNode.parentNode.querySelector(".hidden-task-info").querySelector(".task-description-info").querySelector(".task-description");
+        const editTitleField = document.getElementById("task-title");
+        editTitleField.value = taskTitle.textContent;
+
+        // Display task description on input while edit
+        const editDescriptionField = document.getElementById("task-description");
+        editDescriptionField.value = taskDescription.textContent;
         editFormDisplayed = true;
 
         event.stopPropagation();
+    }
+
+    function deleteButtonHandler(event) {
+        const taskList = event.target.parentNode.parentNode.parentNode;
+        const taskListContainer = document.querySelector(".task-list-container");
+
+        taskListContainer.removeChild(taskList);
+        console.log(taskList);
+        console.log(event.target);
+        
+        // event.stopPropagation();
     }
 
     function displayEmptyErrorMessage() {
