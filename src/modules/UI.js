@@ -236,7 +236,15 @@ export default function updateDom() {
         divOne.appendChild(divOneContent);
 
         const divTwo = document.createElement("div");
-        divTwo.innerHTML = `<b>Date:</b> ${taskDate.textContent}`;
+        divTwo.classList.add("task-date-info");
+        const divTwoTitle = document.createElement("span");
+        divTwoTitle.style.fontWeight = "bold";
+        divTwoTitle.textContent = "Date: ";
+        const divTwoContent = document.createElement("span");
+        divTwoContent.classList.add("task-date");
+        divTwoContent.textContent = taskDate.textContent;
+        divTwo.appendChild(divTwoTitle);
+        divTwo.appendChild(divTwoContent);
 
         const divThree = document.createElement("div");
         divThree.classList.add("task-description-info");
@@ -329,8 +337,8 @@ export default function updateDom() {
                 if (projectFormDisplayed) createProjectList();
                 if (taskFormDisplayed) createTaskList();
                 if (editFormDisplayed) {
+                    updateTaskInfo(event);
                     removeForm();
-                    console.log("ok");
                 }
             });
 
@@ -385,11 +393,7 @@ export default function updateDom() {
         childList: true
     })
 
-    function editButtonHandler(event) {
-        loadEditForm();
-        addButtonHandler();
-        cancelButtonHandler();
-
+    function setEditForm(event) {
         function getTaskInfo(element, parent) {
             if (element.classList.contains("fa-pencil")) {
                 for (let i = 0; i < parent; i++) {
@@ -410,11 +414,30 @@ export default function updateDom() {
         const editDescriptionField = document.getElementById("task-description");
         editDescriptionField.value = getTaskInfo(event.target, 4).querySelector(".task-description").textContent;
 
+        const editDateField = document.getElementById("task-date");
+        editDateField.value = getTaskInfo(event.target, 4).querySelector(".task-date").textContent;
+
         const editPriorityField = document.getElementById("task-priority");
         editPriorityField.value = getTaskInfo(event.target, 4).querySelector(".task-priority").textContent;
 
         editFormDisplayed = true;
         event.stopPropagation();
+
+        return { editTitleField, editDescriptionField, editDateField, editPriorityField };
+    }
+
+    function editButtonHandler(event) {
+        loadEditForm();
+        addButtonHandler();
+        cancelButtonHandler();
+        setEditForm(event);
+    }
+
+    function updateTaskInfo(event) {
+        const inputFields = setEditForm();
+
+        const title = inputFields.editTitleField.value;
+        console.log(title);
     }
 
     function deleteButtonHandler(event) {
