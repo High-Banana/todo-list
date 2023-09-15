@@ -195,7 +195,7 @@ export default function updateDom() {
         }
 
         const taskName = document.createElement("p");
-        taskName.classList.add("task-title");
+        taskName.classList.add("task-name");
         taskName.textContent = getTaskDetails().title;
 
         const taskDescription = document.createElement("p");
@@ -402,13 +402,14 @@ export default function updateDom() {
         return { titleField, descriptionField, dateField, priorityField };
     }
 
-    function getTaskDetails() {
-        const taskTitle = document.querySelector(".task-title");
-        const taskDescription = document.querySelector(".task-description");
-        const taskDate = document.querySelector(".task-date");
-        const taskPriority = document.querySelector(".task-priority");
+    function getTaskDetails(event) {
+        const taskName = event.target.querySelector(".task-name");
+        const taskTitle = event.target.querySelector(".task-title");
+        const taskDescription = event.target.querySelector(".task-description");
+        const taskDate = event.target.querySelector(".task-date");
+        const taskPriority = event.target.querySelector(".task-priority");
 
-        return { taskTitle, taskDescription, taskDate, taskPriority };
+        return { taskName, taskTitle, taskDescription, taskDate, taskPriority };
     }
 
     function setEditForm(event) {
@@ -450,20 +451,29 @@ export default function updateDom() {
     }
 
     function updateTaskInfo() {
+        const listArray = document.querySelectorAll(".task-list-container > .task-list");
+
         const taskTitleField = getTaskInputField().titleField;
         const taskDescriptionField = getTaskInputField().descriptionField;
         const taskDateField = getTaskInputField().dateField;
         const taskPriorityField = getTaskInputField().priorityField;
 
-        const taskTitle = getTaskDetails().taskTitle;
-        const taskDescription = getTaskDetails().taskDescription;
-        const taskDate = getTaskDetails().taskDate;
-        const taskPriority = getTaskDetails().taskPriority;
+        const taskName = getTaskDetails(getEvent()).taskName;
+        const taskTitle = getTaskDetails(getEvent()).taskTitle;
+        const taskDescription = getTaskDetails(getEvent()).taskDescription;
+        const taskDate = getTaskDetails(getEvent()).taskDate;
+        const taskPriority = getTaskDetails(getEvent()).taskPriority;
 
+
+        taskName.textContent = taskTitleField.value;
         taskTitle.textContent = taskTitleField.value;
         taskDescription.textContent = taskDescriptionField.value;
         taskDate.textContent = taskDateField.value;
         taskPriority.textContent = taskPriorityField.value;
+
+        const task = new Task();
+        // const index = [].indexOf.call(listArray, )
+        // task.updateTaskList(taskTitleField.value, taskDescriptionField.value, taskDateField.value, taskPriorityField.value);
     }
 
     function deleteButtonHandler(event) {

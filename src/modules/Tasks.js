@@ -22,4 +22,12 @@ export default class Task {
         taskList.splice(index, 1);
         console.log(taskList);
     }
+
+    // updateTaskList(title, description, date, priority, index) {
+    //     taskList[index].title = title;
+    //     taskList[index].description = description;
+    //     taskList[index].date = date;
+    //     taskList[index].priority = priority;
+    //     console.log(taskList);
+    // }
 }
