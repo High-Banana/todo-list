@@ -248,7 +248,7 @@ export default function updateDom() {
         divThreeContent.textContent = taskDescription.textContent;
         divThree.appendChild(divThreeTitle);
         divThree.appendChild(divThreeContent);
-        
+
         const divFour = document.createElement("div");
         divFour.classList.add("task-priority-info");
         const divFourTitle = document.createElement("span");
@@ -328,7 +328,7 @@ export default function updateDom() {
                 event.preventDefault();
                 if (projectFormDisplayed) createProjectList();
                 if (taskFormDisplayed) createTaskList();
-                if(editFormDisplayed) {
+                if (editFormDisplayed) {
                     removeForm();
                     console.log("ok");
                 }
@@ -389,26 +389,37 @@ export default function updateDom() {
         loadEditForm();
         addButtonHandler();
         cancelButtonHandler();
-        const taskTitle = event.target.parentNode.parentNode.parentNode.querySelector(".task-title");
-        const taskDescription = event.target.parentNode.parentNode.parentNode.parentNode.querySelector(".hidden-task-info").querySelector(".task-description-info").querySelector(".task-description");
-        const taskPriority = event.target.parentNode.parentNode.parentNode.parentNode.querySelector(".hidden-task-info").querySelector(".task-priority-info").querySelector(".task-priority");
+
+        function getTaskInfo(element, parent) {
+            if (element.classList.contains("fa-pencil")) {
+                for (let i = 0; i < parent; i++) {
+                    element = element.parentNode;
+                }
+                return element;
+            } else {
+                for (let i = 0; i < parent - 1; i++) {
+                    element = element.parentNode;
+                }
+                return element;
+            }
+        }
 
         const editTitleField = document.getElementById("task-title");
-        editTitleField.value = taskTitle.textContent;
+        editTitleField.value = getTaskInfo(event.target, 4).querySelector(".task-title").textContent;
 
         const editDescriptionField = document.getElementById("task-description");
-        editDescriptionField.value = taskDescription.textContent;
-        
+        editDescriptionField.value = getTaskInfo(event.target, 4).querySelector(".task-description").textContent;
+
         const editPriorityField = document.getElementById("task-priority");
-        editPriorityField.value = taskPriority.textContent
-        
+        editPriorityField.value = getTaskInfo(event.target, 4).querySelector(".task-priority").textContent;
+
         editFormDisplayed = true;
         event.stopPropagation();
     }
 
     function deleteButtonHandler(event) {
         let taskList;
-        if(event.target.classList.contains("fa-trash")) {
+        if (event.target.classList.contains("fa-trash")) {
             taskList = event.target.parentNode.parentNode.parentNode.parentNode;
         } else {
             taskList = event.target.parentNode.parentNode.parentNode;
