@@ -17,4 +17,9 @@ export default class Task {
         });
         console.log(taskList);
     }
+
+    removeTaskList(index) {
+        taskList.splice(index, 1);
+        console.log(taskList);
+    }
 }

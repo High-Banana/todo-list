@@ -301,6 +301,8 @@ export default function updateDom() {
         });
 
         taskListController.removeEventListener("click", displayHiddenTaskInfo);
+
+        taskListCreated = true;
     }
 
     function displayTaskForm() {
@@ -317,7 +319,6 @@ export default function updateDom() {
                 if (projectFormDisplayed) createProjectList();
                 if (taskFormDisplayed) {
                     createTaskList();
-                    taskListCreated = true;
                 }
             });
 
@@ -380,6 +381,7 @@ export default function updateDom() {
         const taskDescription = event.target.parentNode.parentNode.parentNode.parentNode.querySelector(".hidden-task-info").querySelector(".task-description-info").querySelector(".task-description");
         const editTitleField = document.getElementById("task-title");
         editTitleField.value = taskTitle.textContent;
+        console.log(event.target);
 
         // Display task description on input while edit
         const editDescriptionField = document.getElementById("task-description");
@@ -390,14 +392,23 @@ export default function updateDom() {
     }
 
     function deleteButtonHandler(event) {
-        const taskList = event.target.parentNode.parentNode.parentNode;
+        let taskList;
+        if(event.target.classList.contains("fa-trash")) {
+            taskList = event.target.parentNode.parentNode.parentNode.parentNode;
+        } else {
+            taskList = event.target.parentNode.parentNode.parentNode;
+        }
+
         const taskListContainer = document.querySelector(".task-list-container");
+        const listArray = document.querySelectorAll(".task-list-container > .task-list");
+        const index = [].indexOf.call(listArray, taskList);
+
+        const task = new Task();
+        task.removeTaskList(index);
 
         taskListContainer.removeChild(taskList);
-        console.log(taskList);
-        console.log(event.target);
-        
-        // event.stopPropagation();
+
+        event.stopPropagation();
     }
 
     function displayEmptyErrorMessage() {
