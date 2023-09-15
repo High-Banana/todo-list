@@ -225,10 +225,12 @@ export default function updateDom() {
         rightColumn.classList.add("task-right-column");
 
         const divOne = document.createElement("div");
+        divOne.classList.add("task-title-info");
         const divOneTitle = document.createElement("span");
         divOneTitle.style.fontWeight = "bold";
         divOneTitle.textContent = "Title: ";
         const divOneContent = document.createElement("span");
+        divOneContent.classList.add("task-title");
         divOneContent.textContent = taskName.textContent;
         divOne.appendChild(divOneTitle);
         divOne.appendChild(divOneContent);
@@ -248,7 +250,15 @@ export default function updateDom() {
         divThree.appendChild(divThreeContent);
         
         const divFour = document.createElement("div");
-        divFour.innerHTML = `<b>Prority:</b> ${taskPriority.textContent}`;
+        divFour.classList.add("task-priority-info");
+        const divFourTitle = document.createElement("span");
+        divFourTitle.style.fontWeight = "bold";
+        divFourTitle.textContent = "Priority: ";
+        const divFourContext = document.createElement("span");
+        divFourContext.classList.add("task-priority");
+        divFourContext.textContent = taskPriority.textContent;
+        divFour.appendChild(divFourTitle);
+        divFour.appendChild(divFourContext);
 
         const taskEditButton = document.createElement("button");
         taskEditButton.classList.add("task-edit-button");
@@ -317,8 +327,10 @@ export default function updateDom() {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
                 if (projectFormDisplayed) createProjectList();
-                if (taskFormDisplayed) {
-                    createTaskList();
+                if (taskFormDisplayed) createTaskList();
+                if(editFormDisplayed) {
+                    removeForm();
+                    console.log("ok");
                 }
             });
 
@@ -379,15 +391,18 @@ export default function updateDom() {
         cancelButtonHandler();
         const taskTitle = event.target.parentNode.parentNode.parentNode.querySelector(".task-title");
         const taskDescription = event.target.parentNode.parentNode.parentNode.parentNode.querySelector(".hidden-task-info").querySelector(".task-description-info").querySelector(".task-description");
+        const taskPriority = event.target.parentNode.parentNode.parentNode.parentNode.querySelector(".hidden-task-info").querySelector(".task-priority-info").querySelector(".task-priority");
+
         const editTitleField = document.getElementById("task-title");
         editTitleField.value = taskTitle.textContent;
-        console.log(event.target);
 
-        // Display task description on input while edit
         const editDescriptionField = document.getElementById("task-description");
         editDescriptionField.value = taskDescription.textContent;
+        
+        const editPriorityField = document.getElementById("task-priority");
+        editPriorityField.value = taskPriority.textContent
+        
         editFormDisplayed = true;
-
         event.stopPropagation();
     }
 
