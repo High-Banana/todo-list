@@ -16,7 +16,7 @@ export default function updateDom() {
         console.log("ok");
     }
 
-    function getInputField() {
+    function getProjectInputField() {
         const inputField = document.getElementById("project-title-input");
         return inputField;
     }
@@ -28,14 +28,14 @@ export default function updateDom() {
     }
 
     function checkEmptyInput() {
-        getInputField().classList.add("invalid");
+        getProjectInputField().classList.add("invalid");
         displayEmptyErrorMessage();
         setTimeout(hideErrorMessage, 3000);
-        getInputField().addEventListener("input", () => {
-            if (getInputField().value === "") {
-                getInputField().classList.add("invalid");
-            } else if (getInputField().value !== "") {
-                getInputField().classList.remove("invalid");
+        getProjectInputField().addEventListener("input", () => {
+            if (getProjectInputField().value === "") {
+                getProjectInputField().classList.add("invalid");
+            } else if (getProjectInputField().value !== "") {
+                getProjectInputField().classList.remove("invalid");
             }
         })
     }
@@ -43,29 +43,29 @@ export default function updateDom() {
     function checkLengthyInput() {
         displayLengthErrorMessage();
         setTimeout(hideErrorMessage, 3000);
-        getInputField().addEventListener("input", () => {
-            if (getInputField().value.length <= 12) {
-                getInputField().classList.remove("invalid");
-            } else if (getInputField().value.length > 12) {
-                getInputField().classList.add("invalid");
+        getProjectInputField().addEventListener("input", () => {
+            if (getProjectInputField().value.length <= 12) {
+                getProjectInputField().classList.remove("invalid");
+            } else if (getProjectInputField().value.length > 12) {
+                getProjectInputField().classList.add("invalid");
             }
         })
-        getInputField().classList.add("invalid");
+        getProjectInputField().classList.add("invalid");
     }
 
     function createProjectList() {
-        if (getInputField().value === "") {
+        if (getProjectInputField().value === "") {
             checkEmptyInput();
             return;
         };
 
-        if (getInputField().value.length > 12) {
+        if (getProjectInputField().value.length > 12) {
             checkLengthyInput();
             return;
         }
 
         function getProjectTitle() {
-            const project = new Project(getInputField().value);
+            const project = new Project(getProjectInputField().value);
             project.setProjectList(project.title);
             removeForm();
             return project.title;
@@ -101,7 +101,7 @@ export default function updateDom() {
 
             const projectForm = document.querySelector(".project-form");
 
-            getInputField().value = "";
+            getProjectInputField().value = "";
             projectFormDisplayed = false;
             projectForm.removeEventListener("keydown", addButtonHandler);
 
@@ -337,7 +337,7 @@ export default function updateDom() {
                 if (projectFormDisplayed) createProjectList();
                 if (taskFormDisplayed) createTaskList();
                 if (editFormDisplayed) {
-                    updateTaskInfo(event);
+                    updateTaskInfo();
                     removeForm();
                 }
             });
@@ -393,6 +393,24 @@ export default function updateDom() {
         childList: true
     })
 
+    function getTaskInputField() {
+        const titleField = document.getElementById("task-title");
+        const descriptionField = document.getElementById("task-description");
+        const dateField = document.getElementById("task-date");
+        const priorityField = document.getElementById("task-priority");
+
+        return { titleField, descriptionField, dateField, priorityField };
+    }
+
+    function getTaskDetails() {
+        const taskTitle = document.querySelector(".task-title");
+        const taskDescription = document.querySelector(".task-description");
+        const taskDate = document.querySelector(".task-date");
+        const taskPriority = document.querySelector(".task-priority");
+
+        return { taskTitle, taskDescription, taskDate, taskPriority };
+    }
+
     function setEditForm(event) {
         function getTaskInfo(element, parent) {
             if (element.classList.contains("fa-pencil")) {
@@ -408,22 +426,20 @@ export default function updateDom() {
             }
         }
 
-        const editTitleField = document.getElementById("task-title");
+        const editTitleField = getTaskInputField().titleField;
         editTitleField.value = getTaskInfo(event.target, 4).querySelector(".task-title").textContent;
 
-        const editDescriptionField = document.getElementById("task-description");
+        const editDescriptionField = getTaskInputField().descriptionField;
         editDescriptionField.value = getTaskInfo(event.target, 4).querySelector(".task-description").textContent;
 
-        const editDateField = document.getElementById("task-date");
+        const editDateField = getTaskInputField().dateField;
         editDateField.value = getTaskInfo(event.target, 4).querySelector(".task-date").textContent;
 
-        const editPriorityField = document.getElementById("task-priority");
+        const editPriorityField = getTaskInputField().priorityField;
         editPriorityField.value = getTaskInfo(event.target, 4).querySelector(".task-priority").textContent;
 
         editFormDisplayed = true;
         event.stopPropagation();
-
-        return { editTitleField, editDescriptionField, editDateField, editPriorityField };
     }
 
     function editButtonHandler(event) {
@@ -433,11 +449,21 @@ export default function updateDom() {
         setEditForm(event);
     }
 
-    function updateTaskInfo(event) {
-        const inputFields = setEditForm();
+    function updateTaskInfo() {
+        const taskTitleField = getTaskInputField().titleField;
+        const taskDescriptionField = getTaskInputField().descriptionField;
+        const taskDateField = getTaskInputField().dateField;
+        const taskPriorityField = getTaskInputField().priorityField;
 
-        const title = inputFields.editTitleField.value;
-        console.log(title);
+        const taskTitle = getTaskDetails().taskTitle;
+        const taskDescription = getTaskDetails().taskDescription;
+        const taskDate = getTaskDetails().taskDate;
+        const taskPriority = getTaskDetails().taskPriority;
+
+        taskTitle.textContent = taskTitleField.value;
+        taskDescription.textContent = taskDescriptionField.value;
+        taskDate.textContent = taskDateField.value;
+        taskPriority.textContent = taskPriorityField.value;
     }
 
     function deleteButtonHandler(event) {
