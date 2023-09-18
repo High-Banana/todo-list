@@ -413,14 +413,13 @@ export default function updateDom() {
     }
 
     function getTaskElement(event) {
-        const taskName = getParentNode(event.target, 4).querySelector(".task-title");
-        const secondTaskName = getParentNode(event.target, 4).querySelector(".hidden-task-info > .task-title");
         const taskTitle = getParentNode(event.target, 4).querySelector(".task-title");
+        const secondTaskName = getParentNode(event.target, 4).querySelector(".hidden-task-info .task-title");
         const taskDescription = getParentNode(event.target, 4).querySelector(".task-description");
         const taskDate = getParentNode(event.target, 4).querySelector(".task-date");
         const taskPriority = getParentNode(event.target, 4).querySelector(".task-priority");
 
-        return { taskName, secondTaskName, taskTitle, taskDescription, taskDate, taskPriority };
+        return { taskTitle, secondTaskName, taskDescription, taskDate, taskPriority };
     }
 
     function setEditForm(event) {
@@ -445,7 +444,26 @@ export default function updateDom() {
         addButtonHandler();
         cancelButtonHandler();
         setEditForm(event);
-        getTaskElement(event);
+
+        const updateButton = document.querySelector(".updateButton");
+        const taskTitleField = getTaskInputField().titleField;
+        const taskDescriptionField = getTaskInputField().descriptionField;
+        const taskDateField = getTaskInputField().dateField;
+        const taskPriorityField = getTaskInputField().priorityField;
+
+        const taskTitle = getTaskElement(event).taskTitle;
+        const taskDescription = getTaskElement(event).taskDescription;
+        const taskDate = getTaskElement(event).taskDate;
+        const taskPriority = getTaskElement(event).taskPriority;
+        
+        updateButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            taskTitle.textContent = taskTitleField.value;
+            taskDescription.textContent = taskDescriptionField.value;
+            taskDate.textContent = taskDateField.value;
+            taskPriority.textContent = taskPriorityField.value;
+            removeForm();
+        })
     }
 
     function updateTaskInfo() {
