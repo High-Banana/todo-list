@@ -111,11 +111,12 @@ button:hover {
     transition: .2s;
 }
 
-.addButton {
+.addButton, .updateButton {
     background-color: rgb(0, 193, 0);
 }
 
-.addButton:hover {
+.addButton:hover,
+.updateButton:hover {
     background-color: rgb(0, 172, 0);
 }
 
