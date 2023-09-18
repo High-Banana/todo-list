@@ -23,11 +23,11 @@ export default class Task {
         console.log(taskList);
     }
 
-    updateTaskList(title, description, date, priority) {
-        taskList[0].title = title;
-        taskList[0].description = description;
-        taskList[0].date = date;
-        taskList[0].priority = priority;
+    updateTaskList(title, description, date, priority, index) {
+        taskList[index].title = title;
+        taskList[index].description = description;
+        taskList[index].date = date;
+        taskList[index].priority = priority;
         console.log(taskList);
     }
 }

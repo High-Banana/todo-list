@@ -455,6 +455,10 @@ export default function updateDom() {
         const taskDescription = getTaskElement(event).taskDescription;
         const taskDate = getTaskElement(event).taskDate;
         const taskPriority = getTaskElement(event).taskPriority;
+
+        const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
+        const index = taskArray.indexOf(getParentNode(event.target, 4));
+        console.log(index);
         
         updateButton.addEventListener("click", (event) => {
             event.preventDefault();
@@ -462,6 +466,9 @@ export default function updateDom() {
             taskDescription.textContent = taskDescriptionField.value;
             taskDate.textContent = taskDateField.value;
             taskPriority.textContent = taskPriorityField.value;
+
+            const task = new Task();
+            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, index);
             removeForm();
         })
     }
