@@ -195,7 +195,7 @@ export default function updateDom() {
         }
 
         const taskName = document.createElement("p");
-        taskName.classList.add("task-name");
+        taskName.classList.add("task-title");
         taskName.textContent = getTaskDetails().title;
 
         const taskDescription = document.createElement("p");
@@ -336,10 +336,6 @@ export default function updateDom() {
                 event.preventDefault();
                 if (projectFormDisplayed) createProjectList();
                 if (taskFormDisplayed) createTaskList();
-                if (editFormDisplayed) {
-                    updateTaskInfo();
-                    removeForm();
-                }
             });
 
             if (projectFormDisplayed) {
@@ -393,6 +389,20 @@ export default function updateDom() {
         childList: true
     })
 
+    function getParentNode(element, parent) {
+        if (element.classList.contains("fa-pencil")) {
+            for (let i = 0; i < parent; i++) {
+                element = element.parentNode;
+            }
+            return element;
+        } else {
+            for (let i = 0; i < parent - 1; i++) {
+                element = element.parentNode;
+            }
+            return element;
+        }
+    }
+
     function getTaskInputField() {
         const titleField = document.getElementById("task-title");
         const descriptionField = document.getElementById("task-description");
@@ -402,42 +412,29 @@ export default function updateDom() {
         return { titleField, descriptionField, dateField, priorityField };
     }
 
-    function getTaskDetails(event) {
-        const taskName = event.target.querySelector(".task-name");
-        const taskTitle = event.target.querySelector(".task-title");
-        const taskDescription = event.target.querySelector(".task-description");
-        const taskDate = event.target.querySelector(".task-date");
-        const taskPriority = event.target.querySelector(".task-priority");
+    function getTaskElement(event) {
+        const taskName = getParentNode(event.target, 4).querySelector(".task-title");
+        const secondTaskName = getParentNode(event.target, 4).querySelector(".hidden-task-info > .task-title");
+        const taskTitle = getParentNode(event.target, 4).querySelector(".task-title");
+        const taskDescription = getParentNode(event.target, 4).querySelector(".task-description");
+        const taskDate = getParentNode(event.target, 4).querySelector(".task-date");
+        const taskPriority = getParentNode(event.target, 4).querySelector(".task-priority");
 
-        return { taskName, taskTitle, taskDescription, taskDate, taskPriority };
+        return { taskName, secondTaskName, taskTitle, taskDescription, taskDate, taskPriority };
     }
 
     function setEditForm(event) {
-        function getTaskInfo(element, parent) {
-            if (element.classList.contains("fa-pencil")) {
-                for (let i = 0; i < parent; i++) {
-                    element = element.parentNode;
-                }
-                return element;
-            } else {
-                for (let i = 0; i < parent - 1; i++) {
-                    element = element.parentNode;
-                }
-                return element;
-            }
-        }
-
         const editTitleField = getTaskInputField().titleField;
-        editTitleField.value = getTaskInfo(event.target, 4).querySelector(".task-title").textContent;
+        editTitleField.value = getParentNode(event.target, 4).querySelector(".task-title").textContent;
 
         const editDescriptionField = getTaskInputField().descriptionField;
-        editDescriptionField.value = getTaskInfo(event.target, 4).querySelector(".task-description").textContent;
+        editDescriptionField.value = getParentNode(event.target, 4).querySelector(".task-description").textContent;
 
         const editDateField = getTaskInputField().dateField;
-        editDateField.value = getTaskInfo(event.target, 4).querySelector(".task-date").textContent;
+        editDateField.value = getParentNode(event.target, 4).querySelector(".task-date").textContent;
 
         const editPriorityField = getTaskInputField().priorityField;
-        editPriorityField.value = getTaskInfo(event.target, 4).querySelector(".task-priority").textContent;
+        editPriorityField.value = getParentNode(event.target, 4).querySelector(".task-priority").textContent;
 
         editFormDisplayed = true;
         event.stopPropagation();
@@ -448,6 +445,7 @@ export default function updateDom() {
         addButtonHandler();
         cancelButtonHandler();
         setEditForm(event);
+        getTaskElement(event);
     }
 
     function updateTaskInfo() {
@@ -458,11 +456,11 @@ export default function updateDom() {
         const taskDateField = getTaskInputField().dateField;
         const taskPriorityField = getTaskInputField().priorityField;
 
-        const taskName = getTaskDetails(getEvent()).taskName;
-        const taskTitle = getTaskDetails(getEvent()).taskTitle;
-        const taskDescription = getTaskDetails(getEvent()).taskDescription;
-        const taskDate = getTaskDetails(getEvent()).taskDate;
-        const taskPriority = getTaskDetails(getEvent()).taskPriority;
+        const taskName = getTaskElement().taskName;
+        const taskTitle = getTaskElement().taskTitle;
+        const taskDescription = getTaskElement().taskDescription;
+        const taskDate = getTaskElement().taskDate;
+        const taskPriority = getTaskElement().taskPriority;
 
 
         taskName.textContent = taskTitleField.value;

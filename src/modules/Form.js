@@ -126,7 +126,7 @@ function createEditForm() {
     </fieldset>
     <div class="form-button">
         <button class="cancelButton">Cancel</button>
-        <button class="addButton">Update Task</button>
+        <button class="updateButton">Update Task</button>
     </div>
 </form>`
     return popupField;
