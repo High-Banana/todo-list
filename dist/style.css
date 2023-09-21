@@ -111,7 +111,8 @@ button:hover {
     transition: .2s;
 }
 
-.addButton, .updateButton {
+.addButton,
+.updateButton {
     background-color: rgb(0, 193, 0);
 }
 
@@ -214,16 +215,20 @@ fieldset {
     border: none;
 }
 
-fieldset input, textarea, select {
+fieldset input,
+textarea,
+select {
     border-radius: 5px;
     border: 1px solid black;
 }
 
-fieldset input:focus, textarea:focus {
+fieldset input:focus,
+textarea:focus {
     box-shadow: 0px 0px 3px 3px rgb(0, 224, 49);
 }
 
-fieldset input.invalid, textarea.invalid {
+fieldset input.invalid,
+textarea.invalid {
     border: 1px solid red;
     box-shadow: 0px 0px 3px 3px rgb(255, 58, 58);
 }
@@ -298,11 +303,11 @@ textarea {
 .hidden-task {
     max-height: 0;
     overflow: hidden;
-    transition: max-height .4s ease-in-out;
+    transition: max-height .4s;
 }
 
 .show {
-    max-height: 100%;
+    max-height: 92px;
 }
 
 @keyframes fadeIn {

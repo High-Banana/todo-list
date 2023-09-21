@@ -463,7 +463,8 @@ export default function updateDom() {
         const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
         const index = taskArray.indexOf(getParentNode(event.target, 4));
 
-        const taskPriorityButton = document.querySelector(".task-priority-button");
+        const taskPriorityButton = getParentNode(event.target, 2).querySelector(".task-priority-button");
+        console.log(taskPriorityButton);
 
         updateButton.addEventListener("click", (event) => {
             event.preventDefault();
@@ -562,18 +563,16 @@ export default function updateDom() {
         const collapseDiv = element.querySelector(".hidden-task");
         if (collapseDiv.clientHeight) {
             collapseDiv.style.maxHeight = 0;
-            // collapseDiv.removeAttribute("style");
             setTimeout(() => {
                 collapseDiv.removeAttribute("style");
-                collapseDiv.classList.toggle("show");
-            }, 1000);
+            }, 300);
         } else {
             collapseDiv.style.maxHeight = collapseDiv.scrollHeight + "px";
             setTimeout(() => {
                 collapseDiv.removeAttribute("style");
-                collapseDiv.classList.toggle("show");
             }, 300);
         }
+        collapseDiv.classList.toggle("show");
     }
 
     function addButtonHandler() {
