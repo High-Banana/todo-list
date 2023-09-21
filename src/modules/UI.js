@@ -3,6 +3,7 @@ import Project from "./Project";
 import Task from "./Tasks";
 
 export default function updateDom() {
+    const main = document.querySelector("main");
     const taskListContainer = document.querySelector(".task-list-container");
     const addProjectButton = document.querySelector(".add-project-button");
     const projectContainer = document.querySelector(".project-container");
@@ -13,7 +14,7 @@ export default function updateDom() {
     let editFormDisplayed = false;
     let taskListCreated = false;
 
-    if(taskListContainer.childNodes.length === 0) {
+    if (taskListContainer.childNodes.length === 0) {
         taskListCreated = false;
     } else {
         taskListCreated = true;
@@ -109,11 +110,6 @@ export default function updateDom() {
         const descriptionErrorMessage = document.createElement("span");
         const dateErrorMessage = document.createElement("span");
 
-        titleErrorMessage.textContent = "Task title is required";
-        titleErrorMessage.classList.add("invalid-message");
-        taskTitleInput.after(titleErrorMessage);
-        taskTitleInput.classList.add("invalid");
-
         descriptionErrorMessage.textContent = "Task description is required";
         descriptionErrorMessage.classList.add("invalid-message");
         taskDescriptionInput.after(descriptionErrorMessage);
@@ -124,21 +120,45 @@ export default function updateDom() {
         taskDateInput.after(dateErrorMessage);
         taskDateInput.classList.add("invalid");
 
-        taskTitleInput.addEventListener("input", () => {
-            if (taskTitleInput.value === "") {
-                taskTitleInput.classList.add("invalid");
-                taskTitleInput.after(titleErrorMessage);
-            } else {
-                if (taskTitleInput.classList.contains("invalid")) {
-                    taskTitleInput.classList.remove("invalid");
+        if (taskTitleInput.value === "") {
+            formElement.forEach((element) => {
+                if (element.classList.contains("title")) {
+                    if (element.querySelector(".invalid-message")) {
+                        return;
+                    } else {
+                        titleErrorMessage.textContent = "Task title is required";
+                        titleErrorMessage.classList.add("invalid-message");
+                        taskTitleInput.after(titleErrorMessage);
+                        taskTitleInput.classList.add("invalid");
+                    }
+                }
+            })
+
+
+            taskTitleInput.addEventListener("input", () => {
+                if (taskTitleInput.value === "") {
+                    taskTitleInput.classList.add("invalid");
                     formElement.forEach((element) => {
                         if (element.classList.contains("title")) {
-                            element.removeChild(titleErrorMessage);
+                            if (element.querySelector(".invalid-message")) {
+                                return;
+                            } else {
+                                taskTitleInput.after(titleErrorMessage);
+                            }
                         }
                     })
+                } else {
+                    if (taskTitleInput.classList.contains("invalid")) {
+                        taskTitleInput.classList.remove("invalid");
+                        formElement.forEach((element) => {
+                            if (element.classList.contains("title")) {
+                                element.removeChild(titleErrorMessage);
+                            }
+                        })
+                    }
                 }
-            }
-        })
+            })
+        }
 
         taskDescriptionInput.addEventListener("input", () => {
             if (taskDescriptionInput.value === "") {
@@ -188,14 +208,14 @@ export default function updateDom() {
         }
 
         const task = new Task(taskTitleInput.value, taskDescriptionInput.value, taskDateInput.value, taskPriorityInput.value);
-        
+
         function getTaskDetails() {
             removeForm();
             return task;
         }
 
         task.setTaskList(task.title, task.description, task.date, task.priority);
-        
+
         function setUpTaskElement() {
             const taskName = document.createElement("span");
             taskName.classList.add("task-title");
@@ -411,7 +431,7 @@ export default function updateDom() {
         updateButton.addEventListener("click", (event) => {
             event.preventDefault();
 
-            if(taskTitleField.value === "" || taskDescriptionField.value === "" || taskDateField.value === "") {
+            if (taskTitleField.value === "" || taskDescriptionField.value === "" || taskDateField.value === "") {
                 checkInvalidTaskInput();
                 return;
             }
@@ -434,6 +454,10 @@ export default function updateDom() {
             task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, index);
             removeForm();
         })
+    }
+
+    function priorityButtonHandler(event) {
+        event.stopPropagation();
     }
 
     function deleteButtonHandler(event) {
@@ -560,6 +584,10 @@ export default function updateDom() {
                         const editButton = element.querySelector(".task-edit-button");
                         editButton.addEventListener("click", (event) => {
                             editButtonHandler(event);
+                        })
+                        const priorityButton = element.querySelector(".task-priority-button");
+                        priorityButton.addEventListener("click", (event) => {
+                            priorityButtonHandler(event);
                         })
                         const deleteButton = element.querySelector(".task-delete-button");
                         deleteButton.addEventListener("click", (event) => {
