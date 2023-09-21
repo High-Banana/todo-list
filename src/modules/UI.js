@@ -320,6 +320,9 @@ export default function updateDom() {
         const visibleTaskInfo = document.createElement("div");
         visibleTaskInfo.classList.add("visible-task-info");
 
+        const hiddenTask = document.createElement("div");
+        hiddenTask.classList.add("hidden-task");
+
         const hiddenTaskInfo = document.createElement("div");
         hiddenTaskInfo.classList.add("hidden-task-info");
 
@@ -372,7 +375,8 @@ export default function updateDom() {
         hiddenTaskInfo.appendChild(rightColumn);
 
         taskList.appendChild(visibleTaskInfo);
-        taskList.appendChild(hiddenTaskInfo);
+        hiddenTask.appendChild(hiddenTaskInfo);
+        taskList.appendChild(hiddenTask);
         taskContainer.appendChild(taskList);
 
         visibleTaskInfo.addEventListener("click", () => {
@@ -555,8 +559,21 @@ export default function updateDom() {
     }
 
     function displayHiddenTaskInfo(element) {
-        const hiddenTaskInfo = element.querySelector(".hidden-task-info");
-        hiddenTaskInfo.classList.toggle("show");
+        const collapseDiv = element.querySelector(".hidden-task");
+        if (collapseDiv.clientHeight) {
+            collapseDiv.style.maxHeight = 0;
+            // collapseDiv.removeAttribute("style");
+            setTimeout(() => {
+                collapseDiv.removeAttribute("style");
+                collapseDiv.classList.toggle("show");
+            }, 1000);
+        } else {
+            collapseDiv.style.maxHeight = collapseDiv.scrollHeight + "px";
+            setTimeout(() => {
+                collapseDiv.removeAttribute("style");
+                collapseDiv.classList.toggle("show");
+            }, 300);
+        }
     }
 
     function addButtonHandler() {

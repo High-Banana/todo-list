@@ -287,7 +287,7 @@ textarea {
 }
 
 .hidden-task-info {
-    display: none;
+    display: grid;
     grid-template-columns: 18rem 18rem;
     border: 1px solid black;
     gap: 10px;
@@ -295,9 +295,14 @@ textarea {
     padding: 1rem;
 }
 
-.hidden-task-info.show {
-    display: grid;
-    animation: fadeIn .7s;
+.hidden-task {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease-in-out;
+}
+
+.show {
+    max-height: 100%;
 }
 
 @keyframes fadeIn {
