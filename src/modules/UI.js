@@ -110,16 +110,6 @@ export default function updateDom() {
         const descriptionErrorMessage = document.createElement("span");
         const dateErrorMessage = document.createElement("span");
 
-        descriptionErrorMessage.textContent = "Task description is required";
-        descriptionErrorMessage.classList.add("invalid-message");
-        taskDescriptionInput.after(descriptionErrorMessage);
-        taskDescriptionInput.classList.add("invalid");
-
-        dateErrorMessage.textContent = "Due date is required";
-        dateErrorMessage.classList.add("invalid-message");
-        taskDateInput.after(dateErrorMessage);
-        taskDateInput.classList.add("invalid");
-
         if (taskTitleInput.value === "") {
             formElement.forEach((element) => {
                 if (element.classList.contains("title")) {
@@ -133,8 +123,6 @@ export default function updateDom() {
                     }
                 }
             })
-
-
             taskTitleInput.addEventListener("input", () => {
                 if (taskTitleInput.value === "") {
                     taskTitleInput.classList.add("invalid");
@@ -149,7 +137,7 @@ export default function updateDom() {
                     })
                 } else {
                     if (taskTitleInput.classList.contains("invalid")) {
-                        taskTitleInput.classList.remove("invalid");
+                        taskTitleInput.removeAttribute("class");
                         formElement.forEach((element) => {
                             if (element.classList.contains("title")) {
                                 element.removeChild(titleErrorMessage);
@@ -160,37 +148,82 @@ export default function updateDom() {
             })
         }
 
-        taskDescriptionInput.addEventListener("input", () => {
-            if (taskDescriptionInput.value === "") {
-                taskDescriptionInput.classList.add("invalid");
-                taskDescriptionInput.after(descriptionErrorMessage);
-            } else {
-                if (taskDescriptionInput.classList.contains("invalid")) {
-                    taskDescriptionInput.classList.remove("invalid");
+        if (taskDescriptionInput.value === "") {
+            formElement.forEach((element) => {
+                if (element.classList.contains("description")) {
+                    if (element.querySelector(".invalid-message")) {
+                        return;
+                    } else {
+                        descriptionErrorMessage.textContent = "Task description is required";
+                        descriptionErrorMessage.classList.add("invalid-message");
+                        taskDescriptionInput.after(descriptionErrorMessage);
+                        taskDescriptionInput.classList.add("invalid");
+                    }
+                }
+            })
+            taskDescriptionInput.addEventListener("input", () => {
+                if (taskDescriptionInput.value === "") {
+                    taskDescriptionInput.classList.add("invalid");
                     formElement.forEach((element) => {
                         if (element.classList.contains("description")) {
-                            element.removeChild(descriptionErrorMessage);
+                            if (element.querySelector(".invalid-message")) {
+                                return;
+                            } else {
+                                taskDescriptionInput.after(descriptionErrorMessage);
+                            }
                         }
                     })
+                } else {
+                    if (taskDescriptionInput.classList.contains("invalid")) {
+                        taskDescriptionInput.removeAttribute("class");
+                        formElement.forEach((element) => {
+                            if (element.classList.contains("description")) {
+                                element.removeChild(descriptionErrorMessage);
+                            }
+                        })
+                    }
                 }
-            }
-        })
+            })
+        }
 
-        taskDateInput.addEventListener("input", () => {
-            if (taskDateInput.value === "") {
-                taskDateInput.classList.add("invalid");
-                taskDateInput.after(dateErrorMessage);
-            } else {
-                if (taskDateInput.classList.contains("invalid")) {
-                    taskDateInput.classList.remove("invalid");
+        if (taskDateInput.value === "") {
+            formElement.forEach((element) => {
+                if (element.classList.contains("date")) {
+                    if (element.querySelector(".invalid-message")) {
+                        return;
+                    } else {
+                        dateErrorMessage.textContent = "Due date is required";
+                        dateErrorMessage.classList.add("invalid-message");
+                        taskDateInput.after(dateErrorMessage);
+                        taskDateInput.classList.add("invalid");
+                    }
+                }
+            })
+            taskDateInput.addEventListener("input", () => {
+                if (taskDateInput.value === "") {
+                    taskDateInput.classList.add("invalid");
                     formElement.forEach((element) => {
                         if (element.classList.contains("date")) {
-                            element.removeChild(dateErrorMessage);
+                            if (element.querySelector(".invalid-message")) {
+                                return;
+                            } else {
+                                taskDateInput.after(dateErrorMessage);
+                            }
                         }
                     })
+                } else {
+                    if (taskDateInput.classList.contains("invalid")) {
+                        taskDateInput.removeAttribute("class");
+                        formElement.forEach((element) => {
+                            if (element.classList.contains("date")) {
+                                element.removeChild(dateErrorMessage);
+                            }
+                        })
+                    }
                 }
-            }
-        })
+            })
+        }
+
     }
 
     function createTaskList() {
