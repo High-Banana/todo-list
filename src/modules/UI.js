@@ -102,6 +102,7 @@ export default function updateDom() {
         } else {
             projectList.insertBefore(projectName, projectList.firstChild);
         }
+
         projectContainer.appendChild(projectList);
     }
 
@@ -507,20 +508,40 @@ export default function updateDom() {
         let taskList;
         if (event.target.classList.contains("fa-trash")) {
             taskList = getParentNode(event.target, 5);
-        } else {
+            removeTaskList();
+        } else if (event.target.classList.contains("task-delete-button")) {
             taskList = getParentNode(event.target, 4);
+            removeTaskList();
         }
 
-        const listArray = document.querySelectorAll(".task-list-container > .task-list");
-        const index = [].indexOf.call(listArray, taskList);
+        function removeTaskList() {
+            const taskListArray = document.querySelectorAll(".task-list-container > .task-list");
+            const index = [].indexOf.call(taskListArray, taskList);
 
-        const task = new Task();
-        task.removeTaskList(index);
+            const task = new Task();
+            task.removeTaskList(index);
 
-        taskListContainer.removeChild(taskList);
+            taskListContainer.removeChild(taskList);
+        }
 
-        let projectList;
+        let projectName;
+        if (event.target.classList.contains("fa-times")) {
+            projectName = getParentNode(event.target, 4);
+            removeProject();
+        } else if (event.target.classList.contains("delete-project-button")) {
+            projectName = getParentNode(event.target, 3);
+            removeProject();
+        }
 
+        function removeProject() {
+            const projectListArray = document.querySelectorAll(".project-list > .project-name");
+            const index = [].indexOf.call(projectListArray, projectName);
+
+            const project = new Project();
+            project.removeProjectList(index);
+
+            projectList.removeChild(projectName);
+        }
 
         event.stopPropagation();
     }
@@ -633,7 +654,7 @@ export default function updateDom() {
         cancelButtonHandler();
     })
 
-    const observer = new MutationObserver((mutationList) => {
+    const taskListObserver = new MutationObserver((mutationList) => {
         mutationList.forEach((mutation) => {
             if (mutation.type === "childList") {
                 mutation.addedNodes.forEach((element) => {
@@ -655,8 +676,25 @@ export default function updateDom() {
             }
         })
     })
-    observer.observe(taskListContainer, {
+    taskListObserver.observe(taskListContainer, {
         childList: true
     })
 
+    const projectListObserver = new MutationObserver((mutationList) => {
+        mutationList.forEach((mutation) => {
+            if (mutation.type === "childList") {
+                mutation.addedNodes.forEach((element) => {
+                    if (element.querySelector(".project-name")) {
+                        const deleteButton = element.querySelector(".delete-project-button");
+                        deleteButton.addEventListener("click", (event) => {
+                            deleteButtonHandler(event);
+                        })
+                    }
+                })
+            }
+        })
+    })
+    projectListObserver.observe(projectContainer, {
+        childList: true
+    })
 }

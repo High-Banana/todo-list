@@ -5,6 +5,12 @@ export default class Project {
     }
 
     setProjectList(projectTitle) {
-        projectList.shift(projectTitle);
+        projectList.unshift(projectTitle);
+        console.log(projectList);
+    }
+
+    removeProjectList(index) {
+        projectList.splice(index, 1);
+        console.log(projectList);
     }
 }
