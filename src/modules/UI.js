@@ -76,6 +76,7 @@ export default function updateDom() {
         }
 
         const projectName = document.createElement("button");
+        projectName.classList.add("project-name");
 
         const leftSide = document.createElement("div");
         leftSide.classList.add("project-left-side");
@@ -88,7 +89,7 @@ export default function updateDom() {
 
         const rightSide = document.createElement("div");
         rightSide.classList.add("project-right-side");
-        rightSide.innerHTML = "<button><i class = 'fa-solid fa-times'></i></button>"
+        rightSide.innerHTML = "<button class = 'delete-project-button'><i class = 'fa-solid fa-times'></i></button>";
 
         leftSide.appendChild(iconSpan);
         leftSide.appendChild(text);
@@ -96,7 +97,11 @@ export default function updateDom() {
         projectName.appendChild(leftSide);
         projectName.appendChild(rightSide);
 
-        projectList.appendChild(projectName);
+        if (!projectList.querySelector(".project-name")) {
+            projectList.appendChild(projectName);
+        } else {
+            projectList.insertBefore(projectName, projectList.firstChild);
+        }
         projectContainer.appendChild(projectList);
     }
 
@@ -513,6 +518,9 @@ export default function updateDom() {
         task.removeTaskList(index);
 
         taskListContainer.removeChild(taskList);
+
+        let projectList;
+
 
         event.stopPropagation();
     }
