@@ -1,14 +1,13 @@
 import { loadProjectForm, loadTaskForm, loadEditForm } from "./Form";
 import Project from "./Project";
 import Task from "./Tasks";
-import { createProjectList, createTaskList, getProjectInputField } from "./Project-and-Task-Manager";
+import { createProjectList, createTaskList } from "./Project-and-Task-Manager";
 
 export default function updateDom() {
     const container = document.querySelector(".container");
+    const projectContainer = document.querySelector(".project-container");
     const taskListContainer = document.querySelector(".task-list-container");
     const addProjectButton = document.querySelector(".add-project-button");
-    const projectContainer = document.querySelector(".project-container");
-    const projectList = document.querySelector(".project-list");
     const addTaskButton = document.querySelector(".add-task-button");
     let projectFormDisplayed = false;
     let taskFormDisplayed = false;
@@ -184,7 +183,7 @@ export default function updateDom() {
 
             const projectForm = document.querySelector(".project-form");
 
-            getProjectInputField().value = "";
+            // getProjectInputField().value = "";
             projectFormDisplayed = false;
             projectForm.removeEventListener("keydown", addButtonHandler);
 
@@ -200,6 +199,22 @@ export default function updateDom() {
 
             main.removeChild(popupField);
         }
+    }
+
+    function displayProjectList() {
+        const inputField = document.getElementById("project-title-input");
+        if (inputField.value === "") {
+            checkEmptyInput();
+            return;
+        };
+    
+        if (inputField.value.length > 12) {
+            checkLengthyInput();
+            return;
+        }
+
+        createProjectList();
+        removeForm();
     }
 
     function checkInvalidTaskInput() {
@@ -329,6 +344,7 @@ export default function updateDom() {
     }
 
     function displayTaskList() {
+        const taskList = document.querySelector(".task-list");
         const taskTitleInput = document.getElementById("task-title");
         const taskDescriptionInput = document.getElementById("task-description");
         const taskDateInput = document.getElementById("task-date");
@@ -344,6 +360,27 @@ export default function updateDom() {
             removeForm();
             taskListCreated = true;
         }
+
+        if (taskListCreated) {
+            const visibleTaskInfo = document.querySelector(".visible-task-info");
+            visibleTaskInfo.addEventListener("click", () => displayHiddenTaskInfo(taskList));
+        }
+    }
+
+    function displayHiddenTaskInfo(element) {
+        const collapseDiv = element.querySelector(".hidden-task");
+        if (collapseDiv.clientHeight) {
+            collapseDiv.style.maxHeight = 0;
+            setTimeout(() => {
+                collapseDiv.removeAttribute("style");
+            }, 300);
+        } else {
+            collapseDiv.style.maxHeight = collapseDiv.scrollHeight + "px";
+            setTimeout(() => {
+                collapseDiv.removeAttribute("style");
+            }, 300);
+        }
+        collapseDiv.classList.toggle("show");
     }
 
     function addButtonHandler() {
@@ -352,10 +389,8 @@ export default function updateDom() {
         addButton.forEach(button => {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
-                if (projectFormDisplayed) createProjectList();
-                if (taskFormDisplayed) {
-                    displayTaskList();
-                }
+                if (projectFormDisplayed) displayProjectList();
+                if (taskFormDisplayed) displayTaskList();
             });
 
             if (projectFormDisplayed) {

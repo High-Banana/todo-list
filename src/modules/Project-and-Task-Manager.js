@@ -148,36 +148,18 @@ export function createTaskList() {
     } else {
         taskContainer.insertBefore(taskList, taskContainer.firstChild);
     }
-
-    visibleTaskInfo.addEventListener("click", () => {
-        displayHiddenTaskInfo(taskList);
-    });
-
-    taskListController.removeEventListener("click", displayHiddenTaskInfo);
-}
-
-export function getProjectInputField() {
-    const inputField = document.getElementById("project-title-input");
-    return inputField;
 }
 
 export function createProjectList() {
-    if (getProjectInputField().value === "") {
-        checkEmptyInput();
-        return;
-    };
-
-    if (getProjectInputField().value.length > 12) {
-        checkLengthyInput();
-        return;
-    }
-
+    const inputField = document.getElementById("project-title-input");
     function getProjectTitle() {
-        const project = new Project(getProjectInputField().value);
+        const project = new Project(inputField.value);
         project.setProjectList(project.title);
-        removeForm();
         return project.title;
     }
+
+    const projectList = document.querySelector(".project-list");
+    const projectContainer = document.querySelector(".project-container");
 
     const projectName = document.createElement("button");
     projectName.classList.add("project-name");
@@ -253,20 +235,4 @@ function displayLengthErrorMessage() {
 function hideErrorMessage() {
     const titleErrorMessage = document.querySelector(".error-message");
     document.body.removeChild(titleErrorMessage);
-}
-
-function displayHiddenTaskInfo(element) {
-    const collapseDiv = element.querySelector(".hidden-task");
-    if (collapseDiv.clientHeight) {
-        collapseDiv.style.maxHeight = 0;
-        setTimeout(() => {
-            collapseDiv.removeAttribute("style");
-        }, 300);
-    } else {
-        collapseDiv.style.maxHeight = collapseDiv.scrollHeight + "px";
-        setTimeout(() => {
-            collapseDiv.removeAttribute("style");
-        }, 300);
-    }
-    collapseDiv.classList.toggle("show");
 }

@@ -233,6 +233,10 @@ textarea.invalid {
     box-shadow: 0px 0px 3px 3px rgb(255, 58, 58);
 }
 
+fieldset input.valid,
+textarea.valid {
+    box-shadow: 0px 0px 3px 3px rgb(0, 224, 49);
+}
 
 .column-one,
 .column-two {
