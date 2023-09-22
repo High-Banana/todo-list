@@ -165,19 +165,19 @@ button:hover {
     align-items: center;
 }
 
-.task-container {
+.container {
     display: flex;
     flex-direction: column;
     padding: 2rem;
     gap: 3rem;
 }
 
-.task-header {
+.header {
     display: flex;
     flex-direction: column;
 }
 
-.task-header button {
+.header button {
     align-items: center;
     justify-content: center;
     width: 50%;
