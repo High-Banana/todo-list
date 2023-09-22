@@ -383,7 +383,13 @@ export default function updateDom() {
         taskList.appendChild(visibleTaskInfo);
         hiddenTask.appendChild(hiddenTaskInfo);
         taskList.appendChild(hiddenTask);
-        taskContainer.appendChild(taskList);
+
+        if(!taskContainer.querySelector(".task-list")) {
+            taskContainer.appendChild(taskList);
+        } else {
+            taskContainer.insertBefore(taskList, taskContainer.firstChild);
+        }
+
 
         visibleTaskInfo.addEventListener("click", () => {
             displayHiddenTaskInfo(taskList);
@@ -514,6 +520,15 @@ export default function updateDom() {
             removeTaskList();
         }
 
+        let projectName;
+        if (event.target.classList.contains("fa-times")) {
+            projectName = getParentNode(event.target, 4);
+            removeProject();
+        } else if (event.target.classList.contains("delete-project-button")) {
+            projectName = getParentNode(event.target, 3);
+            removeProject();
+        }
+
         function removeTaskList() {
             const taskListArray = document.querySelectorAll(".task-list-container > .task-list");
             const index = [].indexOf.call(taskListArray, taskList);
@@ -522,15 +537,6 @@ export default function updateDom() {
             task.removeTaskList(index);
 
             taskListContainer.removeChild(taskList);
-        }
-
-        let projectName;
-        if (event.target.classList.contains("fa-times")) {
-            projectName = getParentNode(event.target, 4);
-            removeProject();
-        } else if (event.target.classList.contains("delete-project-button")) {
-            projectName = getParentNode(event.target, 3);
-            removeProject();
         }
 
         function removeProject() {

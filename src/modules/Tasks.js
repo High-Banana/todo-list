@@ -9,7 +9,7 @@ export default class Task {
     }
 
     setTaskList(taskTitle, taskDescription, taskDate, taskPriority) {
-        taskList.push({
+        taskList.unshift({
             "title": taskTitle,
             "description": taskDescription,
             "due-date": taskDate,
