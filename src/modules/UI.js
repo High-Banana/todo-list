@@ -1,7 +1,7 @@
 import { loadProjectForm, loadTaskForm, loadEditForm } from "./Form";
 import Project from "./Project";
 import Task from "./Tasks";
-import { createProjectList, createTaskList } from "./Project-and-Task-Manager";
+import { createProjectList, createTaskList } from "./CreateList";
 
 export default function updateDom() {
     const container = document.querySelector(".container");
@@ -45,7 +45,7 @@ export default function updateDom() {
         taskFormDisplayed = true;
     }
 
-    function getTaskInputField() {
+    function getTaskInputFieldElement() {
         const titleField = document.getElementById("task-title");
         const descriptionField = document.getElementById("task-description");
         const dateField = document.getElementById("task-date");
@@ -65,16 +65,16 @@ export default function updateDom() {
     }
 
     function setEditForm(event) {
-        const editTitleField = getTaskInputField().titleField;
+        const editTitleField = getTaskInputFieldElement().titleField;
         editTitleField.value = getParentNode(event.target, 4).querySelector(".task-title").textContent;
 
-        const editDescriptionField = getTaskInputField().descriptionField;
+        const editDescriptionField = getTaskInputFieldElement().descriptionField;
         editDescriptionField.value = getParentNode(event.target, 4).querySelector(".task-description").textContent;
 
-        const editDateField = getTaskInputField().dateField;
+        const editDateField = getTaskInputFieldElement().dateField;
         editDateField.value = getParentNode(event.target, 4).querySelector(".task-date").textContent;
 
-        const editPriorityField = getTaskInputField().priorityField;
+        const editPriorityField = getTaskInputFieldElement().priorityField;
         editPriorityField.value = getParentNode(event.target, 4).querySelector(".task-priority").textContent;
 
         editFormDisplayed = true;
@@ -88,10 +88,10 @@ export default function updateDom() {
         setEditForm(event);
 
         const updateButton = document.querySelector(".updateButton");
-        const taskTitleField = getTaskInputField().titleField;
-        const taskDescriptionField = getTaskInputField().descriptionField;
-        const taskDateField = getTaskInputField().dateField;
-        const taskPriorityField = getTaskInputField().priorityField;
+        const taskTitleField = getTaskInputFieldElement().titleField;
+        const taskDescriptionField = getTaskInputFieldElement().descriptionField;
+        const taskDateField = getTaskInputFieldElement().dateField;
+        const taskPriorityField = getTaskInputFieldElement().priorityField;
 
         const taskTitle = getTaskElement(event).taskTitle;
         const taskDescription = getTaskElement(event).taskDescription;
@@ -207,7 +207,7 @@ export default function updateDom() {
             checkEmptyInput();
             return;
         };
-    
+
         if (inputField.value.length > 12) {
             checkLengthyInput();
             return;
@@ -340,11 +340,9 @@ export default function updateDom() {
                 }
             })
         }
-
     }
 
     function displayTaskList() {
-        const taskList = document.querySelector(".task-list");
         const taskTitleInput = document.getElementById("task-title");
         const taskDescriptionInput = document.getElementById("task-description");
         const taskDateInput = document.getElementById("task-date");
@@ -362,8 +360,11 @@ export default function updateDom() {
         }
 
         if (taskListCreated) {
+            const taskListDiv = document.querySelector(".task-list");
             const visibleTaskInfo = document.querySelector(".visible-task-info");
-            visibleTaskInfo.addEventListener("click", () => displayHiddenTaskInfo(taskList));
+            visibleTaskInfo.addEventListener("click", () => {
+                displayHiddenTaskInfo(taskListDiv);
+            });
         }
     }
 
