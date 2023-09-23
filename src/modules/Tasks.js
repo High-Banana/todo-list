@@ -15,12 +15,14 @@ export default class Task {
             "due-date": taskDate,
             "priority": taskPriority
         });
-        console.log(taskList);
+        localStorage.setItem("tasks", JSON.stringify(taskList));
     }
 
     removeTaskList(index) {
         taskList.splice(index, 1);
-        console.log(taskList);
+        const getItem = JSON.parse(localStorage.getItem("tasks"));
+        getItem.splice(index, 1);
+        localStorage.setItem("tasks", JSON.stringify(getItem));
     }
 
     updateTaskList(title, description, date, priority, index) {
@@ -28,6 +30,6 @@ export default class Task {
         taskList[index].description = description;
         taskList[index].date = date;
         taskList[index].priority = priority;
-        console.log(taskList);
+        localStorage.setItem("tasks", JSON.stringify(taskList));
     }
 }
