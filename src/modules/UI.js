@@ -21,6 +21,8 @@ export default function updateDom() {
         taskListCreated = true;
     }
 
+
+    // Project manage
     function checkEmptyInput() {
         getProjectInputField().classList.add("invalid");
         displayErrorMessage().emptyMessage();
@@ -71,25 +73,12 @@ export default function updateDom() {
     }
 
     function displayProjectForm() {
-        addProjectButton.style.display = "none";
+        addProjectButton.classList.add("hide");
         loadProjectForm();
         projectFormDisplayed = true;
     }
 
-    function getParentNode(element, parent) {
-        if (element.classList.contains("fa-pencil")) {
-            for (let i = 0; i < parent; i++) {
-                element = element.parentNode;
-            }
-            return element;
-        } else {
-            for (let i = 0; i < parent - 1; i++) {
-                element = element.parentNode;
-            }
-            return element;
-        }
-    }
-
+    // Task manage
     function displayTaskForm() {
         loadTaskForm();
         taskFormDisplayed = true;
@@ -104,7 +93,7 @@ export default function updateDom() {
         return { titleField, descriptionField, dateField, priorityField };
     }
 
-    function getTaskElement(event) {
+    function getTaskListElement(event) {
         const taskTitle = getParentNode(event.target, 4).querySelector(".task-title");
         const secondTaskName = getParentNode(event.target, 4).querySelector(".hidden-task-info .task-title");
         const taskDescription = getParentNode(event.target, 4).querySelector(".task-description");
@@ -114,7 +103,7 @@ export default function updateDom() {
         return { taskTitle, secondTaskName, taskDescription, taskDate, taskPriority };
     }
 
-    function setEditForm(event) {
+    function setupEditForm(event) {
         const editTitleField = getTaskInputFieldElement().titleField;
         editTitleField.value = getParentNode(event.target, 4).querySelector(".task-title").textContent;
 
@@ -133,54 +122,9 @@ export default function updateDom() {
 
     function editButtonHandler(event) {
         loadEditForm();
-        addButtonHandler();
+        updateButtonHandler(event);
         cancelButtonHandler();
-        setEditForm(event);
-
-        const updateButton = document.querySelector(".updateButton");
-        const taskTitleField = getTaskInputFieldElement().titleField;
-        const taskDescriptionField = getTaskInputFieldElement().descriptionField;
-        const taskDateField = getTaskInputFieldElement().dateField;
-        const taskPriorityField = getTaskInputFieldElement().priorityField;
-
-        const taskTitle = getTaskElement(event).taskTitle;
-        const secondTaskName = getTaskElement(event).secondTaskName;
-        const taskDescription = getTaskElement(event).taskDescription;
-        const taskDate = getTaskElement(event).taskDate;
-        const taskPriority = getTaskElement(event).taskPriority;
-
-        const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
-        const index = taskArray.indexOf(getParentNode(event.target, 4));
-
-        const taskPriorityButton = getParentNode(event.target, 2).querySelector(".task-priority-button");
-
-        updateButton.addEventListener("click", (event) => {
-            event.preventDefault();
-
-            if (taskTitleField.value === "" || taskDescriptionField.value === "" || taskDateField.value === "") {
-                checkInvalidTaskInput();
-                return;
-            }
-
-            taskTitle.textContent = taskTitleField.value;
-            secondTaskName.textContent = taskTitleField.value;
-            taskDescription.textContent = taskDescriptionField.value;
-            taskDate.textContent = taskDateField.value;
-            taskPriority.textContent = taskPriorityField.value;
-            console.log(taskDateField.value);
-
-            if (taskPriorityField.value === "Low") {
-                taskPriorityButton.style.color = "green";
-            } else if (taskPriorityField.value === "Medium") {
-                taskPriorityButton.style.color = "orange";
-            } else {
-                taskPriorityButton.style.color = "red";
-            }
-
-            const task = new Task();
-            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, index);
-            removeForm();
-        })
+        setupEditForm(event);
     }
 
     function priorityButtonHandler(event) {
@@ -237,8 +181,8 @@ export default function updateDom() {
             projectFormDisplayed = false;
             projectForm.removeEventListener("keydown", addButtonHandler);
 
-            addProjectButton.style.display = "flex";
-            projectContainer.removeChild(projectForm);
+            addProjectButton.classList.remove("hide");
+            projectContainer.removeChild(projectForm);  
         }
 
         if (taskFormDisplayed || editFormDisplayed) {
@@ -472,6 +416,67 @@ export default function updateDom() {
         })
     }
 
+    function updateButtonHandler(event) {
+        const updateButton = document.querySelector(".updateButton");
+        const taskTitleField = getTaskInputFieldElement().titleField;
+        const taskDescriptionField = getTaskInputFieldElement().descriptionField;
+        const taskDateField = getTaskInputFieldElement().dateField;
+        const taskPriorityField = getTaskInputFieldElement().priorityField;
+
+        const taskTitle = getTaskListElement(event).taskTitle;
+        const secondTaskName = getTaskListElement(event).secondTaskName;
+        const taskDescription = getTaskListElement(event).taskDescription;
+        const taskDate = getTaskListElement(event).taskDate;
+        const taskPriority = getTaskListElement(event).taskPriority;
+
+        const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
+        const index = taskArray.indexOf(getParentNode(event.target, 4));
+
+        const taskPriorityButton = getParentNode(event.target, 2).querySelector(".task-priority-button");
+
+        updateButton.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            if (taskTitleField.value === "" || taskDescriptionField.value === "" || taskDateField.value === "") {
+                checkInvalidTaskInput();
+                return;
+            }
+
+            taskTitle.textContent = taskTitleField.value;
+            secondTaskName.textContent = taskTitleField.value;
+            taskDescription.textContent = taskDescriptionField.value;
+            taskDate.textContent = taskDateField.value;
+            taskPriority.textContent = taskPriorityField.value;
+            console.log(taskDateField.value);
+
+            if (taskPriorityField.value === "Low") {
+                taskPriorityButton.style.color = "green";
+            } else if (taskPriorityField.value === "Medium") {
+                taskPriorityButton.style.color = "orange";
+            } else {
+                taskPriorityButton.style.color = "red";
+            }
+
+            const task = new Task();
+            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, index);
+            removeForm();
+        })
+    }
+
+    function getParentNode(element, parent) {
+        if (element.classList.contains("fa-pencil")) {
+            for (let i = 0; i < parent; i++) {
+                element = element.parentNode;
+            }
+            return element;
+        } else {
+            for (let i = 0; i < parent - 1; i++) {
+                element = element.parentNode;
+            }
+            return element;
+        }
+    }
+
     addProjectButton.addEventListener("click", () => {
         displayProjectForm();
         addButtonHandler();
@@ -535,7 +540,6 @@ export default function updateDom() {
 
     const todayButton = document.querySelector(".today-button");
     todayButton.addEventListener("click", () => {
-        const container = document.querySelector(".container");
         container.textContent = "";
 
         const header = document.createElement("div");

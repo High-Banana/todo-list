@@ -74,6 +74,10 @@ button:hover {
     gap: 1rem;
 }
 
+.project-container .add-project-button.hide {
+    display: none;
+}
+
 .project-container h2 {
     font-size: 1.5rem;
 }

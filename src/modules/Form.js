@@ -33,7 +33,7 @@ function createProjectForm() {
 
     const addButton = document.createElement("button");
     addButton.textContent = "Add";
-    addButton.classList.add("addButton");
+    addButton.classList.add("addButton", "project");
 
     const cancelButton = document.createElement("button");
     cancelButton.textContent = "Cancel";
@@ -84,7 +84,7 @@ function createTaskForm() {
     </fieldset>
     <div class="form-button">
         <button class="cancelButton">Cancel</button>
-        <button class="addButton">Add Task</button>
+        <button class="addButton task">Add Task</button>
     </div>
 </form>`
     return popupField;
