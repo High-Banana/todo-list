@@ -63,7 +63,7 @@ export default function updateDom() {
             main.appendChild(titleErrorMessage);
         }
 
-        return {emptyMessage, lengthyMessage};
+        return { emptyMessage, lengthyMessage };
 
     }
 
@@ -182,7 +182,7 @@ export default function updateDom() {
             projectForm.removeEventListener("keydown", addButtonHandler);
 
             addProjectButton.classList.remove("hide");
-            projectContainer.removeChild(projectForm);  
+            projectContainer.removeChild(projectForm);
         }
 
         if (taskFormDisplayed || editFormDisplayed) {
@@ -384,16 +384,23 @@ export default function updateDom() {
         addButton.forEach(button => {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
-                if (projectFormDisplayed) displayProjectList();
-                if (taskFormDisplayed) displayTaskList();
+                if (event.target.classList.contains("project")) displayProjectList();
+                if (event.target.classList.contains("task")) displayTaskList();
             });
 
             if (projectFormDisplayed) {
                 projectForm.addEventListener("keydown", (event) => {
-                    if (event.key === "Enter" && projectFormDisplayed) {
-                        createProjectList();
-                    };
+                    if (event.key === "Enter") displayProjectList();
                 });
+            }
+
+            if (taskFormDisplayed) {
+                main.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        displayTaskList();
+                    };
+                })
             }
         })
     }
@@ -406,12 +413,19 @@ export default function updateDom() {
                 event.preventDefault();
                 removeForm();
             });
+
             if (projectFormDisplayed) {
                 projectForm.addEventListener("keydown", (event) => {
-                    if (event.key === "Escape" && projectFormDisplayed) {
-                        removeForm();
-                    };
+                    if (event.key === "Escape") removeForm();
                 });
+            }
+
+            if(taskFormDisplayed) {
+                main.addEventListener("keydown", (event) => {
+                    if(event.key === "Escape") {
+                        removeForm();
+                    }
+                })
             }
         })
     }
