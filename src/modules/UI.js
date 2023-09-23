@@ -1,9 +1,10 @@
 import { loadProjectForm, loadTaskForm, loadEditForm } from "./Form";
 import Project from "./Project";
 import Task from "./Tasks";
-import { createProjectList, createTaskList } from "./CreateList";
+import { createProjectList, createTaskList, getProjectInputField } from "./CreateList";
 
 export default function updateDom() {
+    const main = document.querySelector("main");
     const container = document.querySelector(".container");
     const projectContainer = document.querySelector(".project-container");
     const taskListContainer = document.querySelector(".task-list-container");
@@ -18,6 +19,55 @@ export default function updateDom() {
         taskListCreated = false;
     } else {
         taskListCreated = true;
+    }
+
+    function checkEmptyInput() {
+        getProjectInputField().classList.add("invalid");
+        displayErrorMessage().emptyMessage();
+        setTimeout(hideErrorMessage, 3000);
+        getProjectInputField().addEventListener("input", () => {
+            if (getProjectInputField().value === "") {
+                getProjectInputField().classList.add("invalid");
+            } else if (getProjectInputField().value !== "") {
+                getProjectInputField().classList.remove("invalid");
+            }
+        })
+    }
+
+    function checkLengthyInput() {
+        displayErrorMessage().lengthyMessage();
+        setTimeout(hideErrorMessage, 3000);
+        getProjectInputField().addEventListener("input", () => {
+            if (getProjectInputField().value.length <= 12) {
+                getProjectInputField().classList.remove("invalid");
+            } else if (getProjectInputField().value.length > 12) {
+                getProjectInputField().classList.add("invalid");
+            }
+        })
+        getProjectInputField().classList.add("invalid");
+    }
+
+    function displayErrorMessage() {
+        const titleErrorMessage = document.createElement("div");
+        titleErrorMessage.classList.add("error-message");
+
+        function emptyMessage() {
+            titleErrorMessage.textContent = "Project title cannot be empty";
+            main.appendChild(titleErrorMessage);
+        }
+
+        function lengthyMessage() {
+            titleErrorMessage.textContent = "Project title cannot be longer than 12 characters";
+            main.appendChild(titleErrorMessage);
+        }
+
+        return {emptyMessage, lengthyMessage};
+
+    }
+
+    function hideErrorMessage() {
+        const titleErrorMessage = document.querySelector(".error-message");
+        main.removeChild(titleErrorMessage);
     }
 
     function displayProjectForm() {
@@ -94,6 +144,7 @@ export default function updateDom() {
         const taskPriorityField = getTaskInputFieldElement().priorityField;
 
         const taskTitle = getTaskElement(event).taskTitle;
+        const secondTaskName = getTaskElement(event).secondTaskName;
         const taskDescription = getTaskElement(event).taskDescription;
         const taskDate = getTaskElement(event).taskDate;
         const taskPriority = getTaskElement(event).taskPriority;
@@ -102,7 +153,6 @@ export default function updateDom() {
         const index = taskArray.indexOf(getParentNode(event.target, 4));
 
         const taskPriorityButton = getParentNode(event.target, 2).querySelector(".task-priority-button");
-        console.log(taskPriorityButton);
 
         updateButton.addEventListener("click", (event) => {
             event.preventDefault();
@@ -113,6 +163,7 @@ export default function updateDom() {
             }
 
             taskTitle.textContent = taskTitleField.value;
+            secondTaskName.textContent = taskTitleField.value;
             taskDescription.textContent = taskDescriptionField.value;
             taskDate.textContent = taskDateField.value;
             taskPriority.textContent = taskPriorityField.value;
@@ -167,6 +218,7 @@ export default function updateDom() {
 
         function removeProject() {
             const projectListArray = document.querySelectorAll(".project-list > .project-name");
+            const projectList = document.querySelector(".project-list");
             const index = [].indexOf.call(projectListArray, projectName);
 
             const project = new Project();
@@ -180,10 +232,8 @@ export default function updateDom() {
 
     function removeForm() {
         if (projectFormDisplayed) {
-
             const projectForm = document.querySelector(".project-form");
 
-            // getProjectInputField().value = "";
             projectFormDisplayed = false;
             projectForm.removeEventListener("keydown", addButtonHandler);
 

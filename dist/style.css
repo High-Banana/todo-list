@@ -24,14 +24,14 @@
 
 main {
     display: grid;
-    grid-template-columns: 320px auto;
+    grid-template-columns: 256px auto;
     height: 100vh;
 }
 
 button {
     display: flex;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 0.96rem;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -52,7 +52,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 3rem 2rem;
+    padding: 2.4rem 1.6rem;
     background-color: rgb(216, 216, 216);
     overflow-y: scroll;
     overflow-x: hidden;
@@ -74,6 +74,10 @@ button:hover {
     gap: 1rem;
 }
 
+.project-container h2 {
+    font-size: 1.5rem;
+}
+
 .project-form {
     display: flex;
     flex-direction: column;
@@ -82,7 +86,7 @@ button:hover {
 
 .project-form input {
     padding: var(--input-padding);
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 700;
     transition: .3s;
     border: 1px solid black;
@@ -109,6 +113,7 @@ button:hover {
     justify-content: center;
     width: 100%;
     transition: .2s;
+    font-size: 0.9rem;
 }
 
 .addButton,
@@ -146,6 +151,7 @@ button:hover {
     gap: 1.5rem;
     margin: auto;
     width: 100%;
+    overflow: auto;
 }
 
 .project-list button {

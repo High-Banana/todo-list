@@ -192,47 +192,6 @@ export function createProjectList() {
     projectContainer.appendChild(projectList);
 }
 
-function checkEmptyInput() {
-    getProjectInputField().classList.add("invalid");
-    displayEmptyErrorMessage();
-    setTimeout(hideErrorMessage, 3000);
-    getProjectInputField().addEventListener("input", () => {
-        if (getProjectInputField().value === "") {
-            getProjectInputField().classList.add("invalid");
-        } else if (getProjectInputField().value !== "") {
-            getProjectInputField().classList.remove("invalid");
-        }
-    })
-}
-
-function checkLengthyInput() {
-    displayLengthErrorMessage();
-    setTimeout(hideErrorMessage, 3000);
-    getProjectInputField().addEventListener("input", () => {
-        if (getProjectInputField().value.length <= 12) {
-            getProjectInputField().classList.remove("invalid");
-        } else if (getProjectInputField().value.length > 12) {
-            getProjectInputField().classList.add("invalid");
-        }
-    })
-    getProjectInputField().classList.add("invalid");
-}
-
-function displayEmptyErrorMessage() {
-    const titleErrorMessage = document.createElement("p");
-    titleErrorMessage.textContent = "Project title cannot be empty";
-    titleErrorMessage.classList.add("error-message");
-    document.body.appendChild(titleErrorMessage);
-}
-
-function displayLengthErrorMessage() {
-    const titleErrorMessage = document.createElement("p");
-    titleErrorMessage.textContent = "Project title should not be more than 12 letters";
-    titleErrorMessage.classList.add("error-message");
-    document.body.appendChild(titleErrorMessage);
-}
-
-function hideErrorMessage() {
-    const titleErrorMessage = document.querySelector(".error-message");
-    document.body.removeChild(titleErrorMessage);
+export function getProjectInputField() {
+    return document.getElementById("project-title-input");
 }
