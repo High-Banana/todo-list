@@ -1,4 +1,4 @@
-const taskList = [];
+const taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
 export default class Task {
     constructor(title, description, date, priority) {
@@ -12,7 +12,7 @@ export default class Task {
         taskList.unshift({
             "title": taskTitle,
             "description": taskDescription,
-            "due-date": taskDate,
+            "date": taskDate,
             "priority": taskPriority
         });
         localStorage.setItem("tasks", JSON.stringify(taskList));
@@ -22,7 +22,7 @@ export default class Task {
         taskList.splice(index, 1);
         const getItem = JSON.parse(localStorage.getItem("tasks"));
         getItem.splice(index, 1);
-        localStorage.setItem("tasks", JSON.stringify(getItem));
+        // localStorage.setItem("tasks", JSON.stringify(getItem));
     }
 
     updateTaskList(title, description, date, priority, index) {
@@ -30,6 +30,6 @@ export default class Task {
         taskList[index].description = description;
         taskList[index].date = date;
         taskList[index].priority = priority;
-        localStorage.setItem("tasks", JSON.stringify(taskList));
+        // localStorage.setItem("tasks", JSON.stringify(taskList));
     }
 }

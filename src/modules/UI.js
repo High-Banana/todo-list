@@ -21,7 +21,6 @@ export default function updateDom() {
         taskListCreated = true;
     }
 
-
     // Project manage
     function checkEmptyInput() {
         getProjectInputField().classList.add("invalid");
@@ -348,6 +347,14 @@ export default function updateDom() {
             checkInvalidTaskInput();
             return;
         } else {
+            const task = new Task(
+                getTaskInputFieldElement().titleField.value,
+                getTaskInputFieldElement().descriptionField.value,
+                getTaskInputFieldElement().dateField.value,
+                getTaskInputFieldElement().priorityField.value
+            );
+            task.setTaskList(task.title, task.description, task.date, task.priority);
+            console.log("task", task);
             createTaskList();
             removeForm();
             taskListCreated = true;
@@ -420,9 +427,9 @@ export default function updateDom() {
                 });
             }
 
-            if(taskFormDisplayed) {
+            if (taskFormDisplayed) {
                 main.addEventListener("keydown", (event) => {
-                    if(event.key === "Escape") {
+                    if (event.key === "Escape") {
                         removeForm();
                     }
                 })
