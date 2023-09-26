@@ -506,6 +506,11 @@ export default function updateDom() {
             if (mutation.type === "childList") {
                 mutation.addedNodes.forEach((element) => {
                     if (element.querySelector(".task-title")) {
+                        const visibleTaskElement = element.querySelector(".visible-task-info")
+                        visibleTaskElement.addEventListener("click", (event) => {
+                            displayHiddenTaskInfo(element);
+                            event.stopPropagation();
+                        })
                         const editButton = element.querySelector(".task-edit-button");
                         editButton.addEventListener("click", (event) => {
                             editButtonHandler(event);
@@ -526,38 +531,6 @@ export default function updateDom() {
     taskListObserver.observe(taskListContainer, {
         childList: true
     })
-
-    // if (document.querySelector(".task-list")) {
-    //     console.log("yes");
-    //     const taskList = document.querySelector(".task-list");
-    //     const visibleTaskInfo = document.querySelector(".visible-task-info");
-    //     visibleTaskInfo.addEventListener("click", displayHiddenTaskInfo(taskList));
-    // }
-
-    if (taskListContainer.querySelector(".task-list")) {
-        const taskList = document.querySelectorAll(".task-list");
-        taskList.forEach((taskListElement) => {
-            const visibleTaskElement = taskListElement.querySelector(".visible-task-info")
-            visibleTaskElement.addEventListener("click", (event) => {
-                displayHiddenTaskInfo(taskListElement);
-                event.stopPropagation();
-            })
-            const editButton = taskListElement.querySelector(".task-edit-button");
-            editButton.addEventListener("click", (event) => {
-                editButtonHandler(event);
-                event.stopPropagation();
-            })
-            const priorityButton = taskListElement.querySelector(".task-priority-button");
-            priorityButton.addEventListener("click", (event) => {
-                priorityButtonHandler(event);
-            })
-            const deleteButton = taskListElement.querySelector(".task-delete-button");
-            deleteButton.addEventListener("click", (event) => {
-                deleteButtonHandler(event);
-                event.stopPropagation();
-            })
-        })
-    }
 
     const projectListObserver = new MutationObserver((mutationList) => {
         mutationList.forEach((mutation) => {
