@@ -1,11 +1,12 @@
 const taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
 export default class Task {
-    constructor(title, description, date, priority) {
+    constructor(title, description, date, priority, tab) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.priority = priority;
+        this.tab = tab;
     }
 
     setTaskList(taskTitle, taskDescription, taskDate, taskPriority, taskTab) {

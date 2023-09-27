@@ -352,14 +352,24 @@ export default function updateDom() {
             checkInvalidTaskInput();
             return;
         } else {
+            const year = taskDateInput.value.split("-")[0];
+            const month = parseFloat(taskDateInput.value.split("-")[1]) - 1;
+            const day = taskDateInput.value.split("-")[2];
+            const result = isToday(new Date(year, month, day));
+            let taskTab;
+            if (result) {
+                taskTab = "today";
+            } else {
+                taskTab = "inbox";
+            }
             const task = new Task(
                 getTaskInputFieldElement().titleField.value,
                 getTaskInputFieldElement().descriptionField.value,
                 getTaskInputFieldElement().dateField.value,
-                getTaskInputFieldElement().priorityField.value
+                getTaskInputFieldElement().priorityField.value,
+                taskTab
             );
-            console.log()
-            task.setTaskList(task.title, task.description, task.date, task.priority);
+            task.setTaskList(task.title, task.description, task.date, task.priority, task.tab);
             createTaskList();
             removeForm();
             taskListCreated = true;
@@ -603,22 +613,22 @@ export default function updateDom() {
 
     const todayButton = document.querySelector(".today-button");
     todayButton.addEventListener("click", () => {
-        taskListContainer.textContent = "";
+        createTaskList();
         headerTitle.textContent = "Today";
         if (document.querySelector(".add-task-button")) {
             headerDiv.removeChild(addTaskButton);
         }
 
         const storedTask = JSON.parse(localStorage.getItem("tasks"));
+        const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
+        // taskListContainer.textContent = "";
         for (let i = 0; i < storedTask.length; i++) {
-            const year = storedTask[i].date.split("-")[0];
-            const month = parseFloat(storedTask[i].date.split("-")[1]) - 1;
-            const day = storedTask[i].date.split("-")[2];
-            const result = isToday(new Date(year, month, day));
-            console.log(year, month, day);
-            console.log(result);
-            if (result) {
-
+            if (storedTask[i].tab === "inbox") {
+                const todayTaskList = taskArray[i];
+                console.log(storedTask[i]);
+                console.log(todayTaskList);
+                taskListContainer.removeChild(todayTaskList);
+                
             }
         }
     })
