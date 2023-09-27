@@ -623,8 +623,12 @@ export default function updateDom() {
 
     const todayButton = document.querySelector(".today-button");
     todayButton.addEventListener("click", () => {
-        createTaskList();
+        const fillerMessage = document.createElement("p");
+        fillerMessage.textContent = "No tasks for today";
         headerTitle.textContent = "Today";
+        createTaskList();
+        taskListContainer.appendChild(fillerMessage);
+
         if (document.querySelector(".add-task-button")) {
             headerDiv.removeChild(addTaskButton);
         }
@@ -633,9 +637,14 @@ export default function updateDom() {
         const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
         for (let i = 0; i < storedTask.length; i++) {
             if (storedTask[i].tab === "inbox") {
-                const todayTaskList = taskArray[i];
-                taskListContainer.removeChild(todayTaskList);
+                const inboxTaskList = taskArray[i];
+                if (inboxTaskList) {
+                    taskListContainer.removeChild(inboxTaskList);
+                }
 
+                if (taskListContainer.querySelector(".task-list") && taskListContainer.contains(fillerMessage)) {
+                    taskListContainer.removeChild(fillerMessage);
+                }
             }
         }
     })
