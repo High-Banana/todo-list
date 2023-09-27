@@ -149,12 +149,14 @@ button:hover {
     font-weight: 600;
 }
 
-.project-list {
+.project-list-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin: auto;
-    width: 100%;
+    gap: 1rem;
+}
+
+.project-list {
+    display: flex;
     overflow: auto;
 }
 
