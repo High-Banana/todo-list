@@ -2,10 +2,12 @@ import { loadProjectForm, loadTaskForm, loadEditForm } from "./Form";
 import Project from "./Project";
 import Task from "./Tasks";
 import { createProjectList, createTaskList, getProjectInputField } from "./CreateList";
+import { isToday } from "date-fns";
 
 export default function updateDom() {
     const main = document.querySelector("main");
-    const container = document.querySelector(".container");
+    const headerDiv = document.querySelector(".header");
+    const headerTitle = document.querySelector(".header-title");
     const projectContainer = document.querySelector(".project-container");
     const taskListContainer = document.querySelector(".task-list-container");
     const projectListContainer = document.querySelector(".project-list-container");
@@ -160,12 +162,12 @@ export default function updateDom() {
             removeTaskList();
         }
 
-        let projectName;
+        let projectList;
         if (event.target.classList.contains("fa-times")) {
-            projectName = getParentNode(event.target, 4);
+            projectList = getParentNode(event.target, 5);
             removeProject();
         } else if (event.target.classList.contains("delete-project-button")) {
-            projectName = getParentNode(event.target, 3);
+            projectList = getParentNode(event.target, 4);
             removeProject();
         }
 
@@ -180,8 +182,7 @@ export default function updateDom() {
         }
 
         function removeProject() {
-            const projectListArray = document.querySelectorAll(".project-list > .project-name");
-            const projectList = document.querySelector(".project-list");
+            const projectListArray = document.querySelectorAll(".project-list-container > .project-list");
             const index = [].indexOf.call(projectListArray, projectList);
 
             const project = new Project();
@@ -357,6 +358,7 @@ export default function updateDom() {
                 getTaskInputFieldElement().dateField.value,
                 getTaskInputFieldElement().priorityField.value
             );
+            console.log()
             task.setTaskList(task.title, task.description, task.date, task.priority);
             createTaskList();
             removeForm();
@@ -463,7 +465,6 @@ export default function updateDom() {
             taskDescription.textContent = taskDescriptionField.value;
             taskDate.textContent = taskDateField.value;
             taskPriority.textContent = taskPriorityField.value;
-            console.log(taskDateField.value);
 
             if (taskPriorityField.value === "Low") {
                 taskPriorityButton.style.color = "green";
@@ -591,22 +592,34 @@ export default function updateDom() {
 
 
 
-
     const inboxButton = document.querySelector(".inbox-button");
     inboxButton.addEventListener("click", () => {
-
+        createTaskList();
+        headerTitle.textContent = "Inbox";
+        if (!document.querySelector(".add-task-button")) {
+            headerDiv.appendChild(addTaskButton);
+        }
     })
 
     const todayButton = document.querySelector(".today-button");
     todayButton.addEventListener("click", () => {
-        container.textContent = "";
-
-        const header = document.createElement("div");
-        header.classList.add("header");
-        const headerTitle = document.createElement("h1");
+        taskListContainer.textContent = "";
         headerTitle.textContent = "Today";
+        if (document.querySelector(".add-task-button")) {
+            headerDiv.removeChild(addTaskButton);
+        }
 
-        header.appendChild(headerTitle);
-        container.appendChild(header);
+        const storedTask = JSON.parse(localStorage.getItem("tasks"));
+        for (let i = 0; i < storedTask.length; i++) {
+            const year = storedTask[i].date.split("-")[0];
+            const month = parseFloat(storedTask[i].date.split("-")[1]) - 1;
+            const day = storedTask[i].date.split("-")[2];
+            const result = isToday(new Date(year, month, day));
+            console.log(year, month, day);
+            console.log(result);
+            if (result) {
+
+            }
+        }
     })
 }

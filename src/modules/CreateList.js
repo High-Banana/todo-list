@@ -135,9 +135,6 @@ export function createProjectList() {
     for(let i = 0; i < storedProject.length; i++) {
         const projectList = document.createElement("div");
         projectList.classList.add("project-list");
-
-        // const projectList = document.querySelector(".project-list");
-        // const projectContainer = document.querySelector(".project-container");
         
         const projectName = document.createElement("button");
         projectName.classList.add("project-name");
@@ -162,10 +159,6 @@ export function createProjectList() {
         projectName.appendChild(rightSide);
         
         projectList.appendChild(projectName);
-        // if (!projectList.querySelector(".project-name")) {
-        // } else {
-        //     projectList.insertBefore(projectName, projectList.firstChild);
-        // }   
         projectListContainer.appendChild(projectList);
     }
 }

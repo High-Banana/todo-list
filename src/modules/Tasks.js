@@ -8,12 +8,13 @@ export default class Task {
         this.priority = priority;
     }
 
-    setTaskList(taskTitle, taskDescription, taskDate, taskPriority) {
+    setTaskList(taskTitle, taskDescription, taskDate, taskPriority, taskTab) {
         taskList.unshift({
             "title": taskTitle,
             "description": taskDescription,
             "date": taskDate,
-            "priority": taskPriority
+            "priority": taskPriority,
+            "tab": taskTab
         });
         localStorage.setItem("tasks", JSON.stringify(taskList));
     }

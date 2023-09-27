@@ -10,16 +10,13 @@ export default class Project {
             "title": projectTitle,
             "tasks": projectTask
         });
-        console.log(projectList);
         localStorage.setItem("projects", JSON.stringify(projectList));
     }
 
     removeProjectList(index) {
         projectList.splice(index, 1);
-        console.log(projectList);
         const getProject = JSON.parse(localStorage.getItem("projects"));
-        // getProject.splice(index, 1);
-        console.log("get", getProject[0]);
+        getProject.splice(index, 1);
         localStorage.setItem("projects", JSON.stringify(projectList));
     }
 }
