@@ -484,8 +484,18 @@ export default function updateDom() {
                 taskPriorityButton.style.color = "red";
             }
 
+            const year = taskDate.textContent.split("-")[0];
+            const month = parseFloat(taskDate.textContent.split("-")[1]) - 1;
+            const day = taskDate.textContent.split("-")[2];
+            const result = isToday(new Date(year, month, day));
+            let taskTab;
+            if (result) {
+                taskTab = "today";
+            } else {
+                taskTab = "inbox";
+            }
             const task = new Task();
-            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, index);
+            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, taskTab, index);
             removeForm();
         })
     }
@@ -621,14 +631,11 @@ export default function updateDom() {
 
         const storedTask = JSON.parse(localStorage.getItem("tasks"));
         const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
-        // taskListContainer.textContent = "";
         for (let i = 0; i < storedTask.length; i++) {
             if (storedTask[i].tab === "inbox") {
                 const todayTaskList = taskArray[i];
-                console.log(storedTask[i]);
-                console.log(todayTaskList);
                 taskListContainer.removeChild(todayTaskList);
-                
+
             }
         }
     })

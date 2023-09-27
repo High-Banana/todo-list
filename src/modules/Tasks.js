@@ -27,11 +27,12 @@ export default class Task {
         localStorage.setItem("tasks", JSON.stringify(getItem));
     }
 
-    updateTaskList(title, description, date, priority, index) {
+    updateTaskList(title, description, date, priority, taskTab, index) {
         taskList[index].title = title;
         taskList[index].description = description;
         taskList[index].date = date;
         taskList[index].priority = priority;
+        taskList[index].tab = taskTab;
         localStorage.setItem("tasks", JSON.stringify(taskList));
     }
 }
