@@ -8,6 +8,7 @@ export default function updateDom() {
     const container = document.querySelector(".container");
     const projectContainer = document.querySelector(".project-container");
     const taskListContainer = document.querySelector(".task-list-container");
+    const projectListContainer = document.querySelector(".project-list-container");
     const addProjectButton = document.querySelector(".add-project-button");
     const addTaskButton = document.querySelector(".add-task-button");
     let projectFormDisplayed = false;
@@ -23,14 +24,15 @@ export default function updateDom() {
 
     // Project manage
     function checkEmptyInput() {
-        getProjectInputField().classList.add("invalid");
+        const projectInputField = document.getElementById("project-title-input");
+        projectInputField.classList.add("invalid");
         displayErrorMessage().emptyMessage();
         setTimeout(hideErrorMessage, 3000);
-        getProjectInputField().addEventListener("input", () => {
-            if (getProjectInputField().value === "") {
-                getProjectInputField().classList.add("invalid");
-            } else if (getProjectInputField().value !== "") {
-                getProjectInputField().classList.remove("invalid");
+        projectInputField.addEventListener("input", () => {
+            if (projectInputField.value === "") {
+                projectInputField.classList.add("invalid");
+            } else if (projectInputField.value !== "") {
+                projectInputField.classList.remove("invalid");
             }
         })
     }
@@ -75,6 +77,24 @@ export default function updateDom() {
         addProjectButton.classList.add("hide");
         loadProjectForm();
         projectFormDisplayed = true;
+    }
+
+    function displayProjectList() {
+        const inputField = document.getElementById("project-title-input");
+        if (inputField.value === "") {
+            checkEmptyInput();
+            return;
+        };
+
+        if (inputField.value.length > 12) {
+            checkLengthyInput();
+            return;
+        }
+        const project = new Project(inputField.value);
+        project.setProjectList(project.title);
+
+        createProjectList();
+        removeForm();
     }
 
     // Task manage
@@ -162,12 +182,12 @@ export default function updateDom() {
         function removeProject() {
             const projectListArray = document.querySelectorAll(".project-list > .project-name");
             const projectList = document.querySelector(".project-list");
-            const index = [].indexOf.call(projectListArray, projectName);
+            const index = [].indexOf.call(projectListArray, projectList);
 
             const project = new Project();
             project.removeProjectList(index);
 
-            projectList.removeChild(projectName);
+            projectListContainer.removeChild(projectList);
         }
 
         event.stopPropagation();
@@ -192,22 +212,6 @@ export default function updateDom() {
 
             main.removeChild(popupField);
         }
-    }
-
-    function displayProjectList() {
-        const inputField = document.getElementById("project-title-input");
-        if (inputField.value === "") {
-            checkEmptyInput();
-            return;
-        };
-
-        if (inputField.value.length > 12) {
-            checkLengthyInput();
-            return;
-        }
-
-        createProjectList();
-        removeForm();
     }
 
     function checkInvalidTaskInput() {
@@ -535,7 +539,7 @@ export default function updateDom() {
     if (taskListContainer.querySelector(".task-list")) {
         const taskList = document.querySelectorAll(".task-list");
         taskList.forEach((taskListElement) => {
-            const visibleTaskElement = taskListElement.querySelector(".visible-task-info")
+            const visibleTaskElement = taskListElement.querySelector(".visible-task-info");
             visibleTaskElement.addEventListener("click", (event) => {
                 displayHiddenTaskInfo(taskListElement);
                 event.stopPropagation();
@@ -571,9 +575,22 @@ export default function updateDom() {
             }
         })
     })
-    projectListObserver.observe(projectContainer, {
+    projectListObserver.observe(projectListContainer, {
         childList: true
     })
+
+    if (projectContainer.querySelector(".project-list")) {
+        const projectList = document.querySelectorAll(".project-list");
+        projectList.forEach((projectListElement) => {
+            const deleteButton = projectListElement.querySelector(".delete-project-button");
+            deleteButton.addEventListener("click", (event) => {
+                deleteButtonHandler(event);
+            })
+        })
+    }
+
+
+
 
     const inboxButton = document.querySelector(".inbox-button");
     inboxButton.addEventListener("click", () => {

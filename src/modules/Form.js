@@ -1,6 +1,6 @@
 export function loadProjectForm() {
-    const projectList = document.querySelector(".project-list");
-    return projectList.before(createProjectForm());
+    const projectListContainer = document.querySelector(".project-list-container");
+    return projectListContainer.before(createProjectForm());
 }
 
 export function loadTaskForm() {

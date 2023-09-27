@@ -1,14 +1,12 @@
-import Task from "./Tasks";
-import Project from "./Project";
-
 if (localStorage.getItem("tasks")) createTaskList();
+if (localStorage.getItem("projects")) createProjectList();
 
 export function createTaskList() {
-    const storedItem = JSON.parse(localStorage.getItem("tasks"));
+    const storedTask = JSON.parse(localStorage.getItem("tasks"));
     const taskContainer = document.querySelector(".task-list-container");
     taskContainer.textContent = "";
 
-    for (let i = 0; i < storedItem.length; i++) {
+    for (let i = 0; i < storedTask.length; i++) {
         // Visible div
         const taskList = document.createElement("div");
         taskList.classList.add("task-list");
@@ -21,7 +19,7 @@ export function createTaskList() {
 
         const taskTitle = document.createElement("span");
         taskTitle.classList.add("task-title");
-        taskTitle.textContent = storedItem[i].title;
+        taskTitle.textContent = storedTask[i].title;
 
         const taskListController = document.createElement("div");
         taskListController.classList.add("task-list-controller");
@@ -34,11 +32,11 @@ export function createTaskList() {
         taskPriorityButton.innerHTML = `<i class="fa-solid fa-flag"></i>`;
         taskPriorityButton.classList.add("task-priority-button");
 
-        if (storedItem[i].priority === "Low") {
+        if (storedTask[i].priority === "Low") {
             taskPriorityButton.style.color = "green";
-        } else if (storedItem[i].priority === "Medium") {
+        } else if (storedTask[i].priority === "Medium") {
             taskPriorityButton.style.color = "orange";
-        } else if (storedItem[i].priority === "High") {
+        } else if (storedTask[i].priority === "High") {
             taskPriorityButton.style.color = "red";
         }
 
@@ -67,7 +65,7 @@ export function createTaskList() {
             title.textContent = "Title: ";
             const content = document.createElement("span");
             content.classList.add("task-title");
-            content.textContent = storedItem[i].title;
+            content.textContent = storedTask[i].title;
             taskTitleDiv.appendChild(title);
             taskTitleDiv.appendChild(content);
             return taskTitleDiv;
@@ -81,7 +79,7 @@ export function createTaskList() {
             title.textContent = "Date: ";
             const content = document.createElement("span");
             content.classList.add("task-date");
-            content.textContent = storedItem[i].date;
+            content.textContent = storedTask[i].date;
             taskDateDiv.appendChild(title);
             taskDateDiv.appendChild(content);
             return taskDateDiv;
@@ -95,7 +93,7 @@ export function createTaskList() {
             title.textContent = "Description: ";
             const content = document.createElement("span");
             content.classList.add("task-description");
-            content.textContent = storedItem[i].description;
+            content.textContent = storedTask[i].description;
             taskDescriptionDiv.appendChild(title);
             taskDescriptionDiv.appendChild(content);
             return taskDescriptionDiv;
@@ -109,7 +107,7 @@ export function createTaskList() {
             title.textContent = "Priority: ";
             const content = document.createElement("span");
             content.classList.add("task-priority");
-            content.textContent = storedItem[i].priority;
+            content.textContent = storedTask[i].priority;
             taskPriorityDiv.appendChild(title);
             taskPriorityDiv.appendChild(content);
             return taskPriorityDiv;
@@ -130,45 +128,46 @@ export function createTaskList() {
 }
 
 export function createProjectList() {
-    const inputField = document.getElementById("project-title-input");
-    function getProjectTitle() {
-        const project = new Project(inputField.value);
-        project.setProjectList(project.title);
-        return project.title;
-    }
+    const storedProject = JSON.parse(localStorage.getItem("projects"));
+    const projectListContainer = document.querySelector(".project-list-container");
+    projectListContainer.textContent = "";
 
-    const projectList = document.querySelector(".project-list");
-    const projectContainer = document.querySelector(".project-container");
+    for(let i = 0; i < storedProject.length; i++) {
+        const projectList = document.createElement("div");
+        projectList.classList.add("project-list");
 
-    const projectName = document.createElement("button");
-    projectName.classList.add("project-name");
-
-    const leftSide = document.createElement("div");
-    leftSide.classList.add("project-left-side");
-
-    const iconSpan = document.createElement("span");
-    iconSpan.innerHTML = "<i class = 'fa-solid fa-tasks'></i>";
-
-    const text = document.createElement("p");
-    text.textContent = getProjectTitle();
-
-    const rightSide = document.createElement("div");
-    rightSide.classList.add("project-right-side");
-    rightSide.innerHTML = "<button class = 'delete-project-button'><i class = 'fa-solid fa-times'></i></button>";
-
-    leftSide.appendChild(iconSpan);
-    leftSide.appendChild(text);
-
-    projectName.appendChild(leftSide);
-    projectName.appendChild(rightSide);
-
-    if (!projectList.querySelector(".project-name")) {
+        // const projectList = document.querySelector(".project-list");
+        // const projectContainer = document.querySelector(".project-container");
+        
+        const projectName = document.createElement("button");
+        projectName.classList.add("project-name");
+        
+        const leftSide = document.createElement("div");
+        leftSide.classList.add("project-left-side");
+        
+        const iconSpan = document.createElement("span");
+        iconSpan.innerHTML = "<i class = 'fa-solid fa-tasks'></i>";
+        
+        const text = document.createElement("p");
+        text.textContent = storedProject[i].title;
+        
+        const rightSide = document.createElement("div");
+        rightSide.classList.add("project-right-side");
+        rightSide.innerHTML = "<button class = 'delete-project-button'><i class = 'fa-solid fa-times'></i></button>";
+        
+        leftSide.appendChild(iconSpan);
+        leftSide.appendChild(text);
+        
+        projectName.appendChild(leftSide);
+        projectName.appendChild(rightSide);
+        
         projectList.appendChild(projectName);
-    } else {
-        projectList.insertBefore(projectName, projectList.firstChild);
+        // if (!projectList.querySelector(".project-name")) {
+        // } else {
+        //     projectList.insertBefore(projectName, projectList.firstChild);
+        // }   
+        projectListContainer.appendChild(projectList);
     }
-
-    projectContainer.appendChild(projectList);
 }
 
 export function getProjectInputField() {
