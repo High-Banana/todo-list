@@ -106,12 +106,13 @@ export default function updateDom() {
     }
 
     function getTaskInputFieldElement() {
-        const titleField = document.getElementById("task-title");
-        const descriptionField = document.getElementById("task-description");
-        const dateField = document.getElementById("task-date");
-        const priorityField = document.getElementById("task-priority");
+        const titleField = document.getElementById("task-title-field");
+        const descriptionField = document.getElementById("task-description-field");
+        const dateField = document.getElementById("task-date-field");
+        const priorityField = document.getElementById("task-priority-field");
+        const taskProjectField = document.getElementById("task-project-field");
 
-        return { titleField, descriptionField, dateField, priorityField };
+        return { titleField, descriptionField, dateField, priorityField, taskProjectField };
     }
 
     function getTaskListElement(event) {
@@ -126,6 +127,7 @@ export default function updateDom() {
 
     function setupEditForm(event) {
         const editTitleField = getTaskInputFieldElement().titleField;
+        console.log(editTitleField);
         editTitleField.value = getParentNode(event.target, 4).querySelector(".task-title").textContent;
 
         const editDescriptionField = getTaskInputFieldElement().descriptionField;
@@ -218,9 +220,9 @@ export default function updateDom() {
 
     function checkInvalidTaskInput() {
         const formElement = document.querySelectorAll(".form-element");
-        const taskTitleInput = document.getElementById("task-title");
-        const taskDescriptionInput = document.getElementById("task-description");
-        const taskDateInput = document.getElementById("task-date");
+        const taskTitleInput = getTaskInputFieldElement().titleField;
+        const taskDescriptionInput = getTaskInputFieldElement().descriptionField;
+        const taskDateInput = getTaskInputFieldElement().dateField;
 
         const titleErrorMessage = document.createElement("span");
         const descriptionErrorMessage = document.createElement("span");
@@ -342,13 +344,15 @@ export default function updateDom() {
     }
 
     function displayTaskList() {
-        const taskTitleInput = document.getElementById("task-title");
-        const taskDescriptionInput = document.getElementById("task-description");
-        const taskDateInput = document.getElementById("task-date");
+        const taskTitleInput = getTaskInputFieldElement().titleField;
+        const taskDescriptionInput = getTaskInputFieldElement().descriptionField;
+        const taskDateInput = getTaskInputFieldElement().dateField;
+        const taskPriorityInput = getTaskInputFieldElement().priorityField;
+        const taskProjectInput = getTaskInputFieldElement().taskProjectField;
 
-        if (taskTitleInput.value === "" ||
-            taskDescriptionInput.value === "" ||
-            taskDateInput.value === ""
+        if (getTaskInputFieldElement().titleField.value === "" ||
+            getTaskInputFieldElement().descriptionField.value === "" ||
+            getTaskInputFieldElement().dateField.value === ""
         ) {
             checkInvalidTaskInput();
             return;
@@ -367,13 +371,13 @@ export default function updateDom() {
                 taskTab = "inbox";
             }
             const task = new Task(
-                getTaskInputFieldElement().titleField.value,
-                getTaskInputFieldElement().descriptionField.value,
-                getTaskInputFieldElement().dateField.value,
-                getTaskInputFieldElement().priorityField.value,
-                taskTab
+                taskTitleInput.value,
+                taskDescriptionInput.value,
+                taskDateInput.value,
+                taskPriorityInput.value,
+                taskTab,
             );
-            task.setTaskList(task.title, task.description, task.date, task.priority, task.tab);
+            task.setTaskList(task.title, task.description, task.date, task.priority, task.tab, taskProjectInput.value);
             createTaskList();
             removeForm();
             taskListCreated = true;
@@ -455,6 +459,7 @@ export default function updateDom() {
         const taskDescriptionField = getTaskInputFieldElement().descriptionField;
         const taskDateField = getTaskInputFieldElement().dateField;
         const taskPriorityField = getTaskInputFieldElement().priorityField;
+        const taskProjectField = getTaskInputFieldElement().taskProjectField;
 
         const taskTitle = getTaskListElement(event).taskTitle;
         const secondTaskName = getTaskListElement(event).secondTaskName;
@@ -503,7 +508,7 @@ export default function updateDom() {
                 taskTab = "inbox";
             }
             const task = new Task();
-            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, taskTab, index);
+            task.updateTaskList(taskTitle.textContent, taskDescription.textContent, taskDate.textContent, taskPriority.textContent, taskTab, taskProjectField.value, index);
             removeForm();
         })
     }
@@ -597,7 +602,6 @@ export default function updateDom() {
         })
     }
 
-
     const inboxButton = document.querySelector(".inbox-button");
     inboxButton.addEventListener("click", () => {
         createTaskList();
@@ -663,12 +667,28 @@ export default function updateDom() {
 
     function projectTabHandler(element) {
         headerTitle.textContent = element.textContent;
+        createTaskList();
+
+        if (document.querySelector(".add-task-button")) {
+            headerDiv.removeChild(addTaskButton);
+        }
+
+        const storedTask = JSON.parse(localStorage.getItem("tasks"));
+        const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
+        for (let i = 0; i < storedTask.length; i++) {
+            if (storedTask[i].project !== element.textContent) {
+                const filteredArray = taskArray[i];
+                if (filteredArray) {
+                    filteredArray.style.display = "none";
+                }
+            }
+        }
     }
 
     if (projectListContainer.querySelector(".project-list")) {
         const projectList = document.querySelectorAll(".project-list");
         projectList.forEach((element) => {
-            element.addEventListener("click", () => projectTabHandler(element))
+            element.addEventListener("click", () => projectTabHandler(element));
         })
     }
 }

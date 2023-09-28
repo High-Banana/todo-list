@@ -11,7 +11,8 @@ export function loadTaskForm() {
 
 export function loadEditForm() {
     const main = document.querySelector("main");
-    return main.appendChild(createEditForm());
+    main.appendChild(createEditForm());
+    addTaskProjectSelectOption();
 }
 
 function createProjectForm() {
@@ -56,25 +57,25 @@ function createTaskForm() {
     <fieldset>
         <div class="column-one">
             <div class="form-element title">
-                <label for="task-title">Title</label>
-                <input id="task-title" autocomplete = "off">
+                <label for="task-title-field">Title</label>
+                <input id="task-title-field" autocomplete = "off">
             </div>
 
             <div class="form-element description">
-                <label for="task-description">Description</label>
-                <textarea id="task-description"></textarea>
+                <label for="task-description-field">Description</label>
+                <textarea id="task-description-field"></textarea>
             </div>
         </div>
 
         <div class="column-two">
             <div class="form-element date">
-                <label for="task-date">Due Date</label>
-                <input id="task-date" type="date">
+                <label for="task-date-field">Due Date</label>
+                <input id="task-date-field" type="date">
             </div>
 
             <div class="form-element priority">
-                <label for="task-priority">Priority</label>
-                <select id="task-priority">
+                <label for="task-priority-field">Priority</label>
+                <select id="task-priority-field">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
@@ -94,29 +95,29 @@ function createTaskForm() {
 function createEditForm() {
     const popupField = document.createElement("div");
     popupField.classList.add("popup-field");
-    popupField.innerHTML = `<form class="edit-form">
+    popupField.innerHTML = `<form class="task-form edit">
     <fieldset>
         <div class="column-one">
             <div class="form-element title">
-                <label for="task-title">Title</label>
-                <input id="task-title" autocomplete = "off">
+                <label for="task-title-field">Title</label>
+                <input id="task-title-field" autocomplete = "off">
             </div>
 
             <div class="form-element description">
-                <label for="task-description">Description</label>
-                <textarea id="task-description"></textarea>
+                <label for="task-description-field">Description</label>
+                <textarea id="task-description-field"></textarea>
             </div>
         </div>
 
         <div class="column-two">
             <div class="form-element date">
-                <label for="task-date">Due Date</label>
-                <input id="task-date" type="date">
+                <label for="task-date-field">Due Date</label>
+                <input id="task-date-field" type="date">
             </div>
 
             <div class="form-element priority">
-                <label for="task-priority">Priority</label>
-                <select id="task-priority">
+                <label for="task-priority-field">Priority</label>
+                <select id="task-priority-field">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
@@ -141,11 +142,11 @@ function addTaskProjectSelectOption() {
     projectFormElement.classList.add("form-element", "project");
 
     const projectSelectLabel = document.createElement("label");
-    projectSelectLabel.setAttribute("for", "task-project");
+    projectSelectLabel.setAttribute("for", "task-project-field");
     projectSelectLabel.textContent = "Project"
     
     const projectSelectField = document.createElement("select");
-    projectSelectField.setAttribute("id", "task-project");
+    projectSelectField.setAttribute("id", "task-project-field");
     projectSelectField.add(new Option("Inbox"));
     if(projectListContainer.querySelector(".project-list")) {
         const projectList = document.querySelectorAll(".project-list");

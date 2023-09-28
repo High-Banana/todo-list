@@ -1,14 +1,13 @@
 const projectList = JSON.parse(localStorage.getItem("projects")) || [];
 export default class Project {
-    constructor(title, task) {
+    constructor(title) {
         this.title = title;
-        this.task = [task];
+        this.task = [];
     }
 
-    setProjectList(projectTitle, projectTask) {
+    setProjectList(projectTitle) {
         projectList.unshift({
-            "title": projectTitle,
-            "tasks": projectTask
+            "title": projectTitle
         });
         localStorage.setItem("projects", JSON.stringify(projectList));
     }
