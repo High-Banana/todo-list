@@ -5,7 +5,8 @@ export function loadProjectForm() {
 
 export function loadTaskForm() {
     const main = document.querySelector("main");
-    return main.appendChild(createTaskForm());
+    main.appendChild(createTaskForm());
+    addTaskProjectSelectOption();
 }
 
 export function loadEditForm() {
@@ -130,4 +131,30 @@ function createEditForm() {
     </div>
 </form>`
     return popupField;
+}
+
+function addTaskProjectSelectOption() {
+    const projectListContainer = document.querySelector(".project-list-container");
+    const taskForm = document.querySelector(".task-form > fieldset > .column-two");
+
+    const projectFormElement = document.createElement("div");
+    projectFormElement.classList.add("form-element", "project");
+
+    const projectSelectLabel = document.createElement("label");
+    projectSelectLabel.setAttribute("for", "task-project");
+    projectSelectLabel.textContent = "Project"
+    
+    const projectSelectField = document.createElement("select");
+    projectSelectField.setAttribute("id", "task-project");
+    projectSelectField.add(new Option("Inbox"));
+    if(projectListContainer.querySelector(".project-list")) {
+        const projectList = document.querySelectorAll(".project-list");
+        projectList.forEach((element) => {
+            const projectName = element.querySelector("p");
+            projectSelectField.add(new Option(projectName.textContent));
+        })
+    }
+    
+    projectFormElement.append(projectSelectLabel, projectSelectField);
+    taskForm.appendChild(projectFormElement);
 }
