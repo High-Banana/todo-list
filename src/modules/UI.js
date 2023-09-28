@@ -2,7 +2,7 @@ import { loadProjectForm, loadTaskForm, loadEditForm } from "./Form";
 import Project from "./Project";
 import Task from "./Tasks";
 import { createProjectList, createTaskList, getProjectInputField } from "./CreateList";
-import { isToday } from "date-fns";
+import { isToday, isFuture } from "date-fns";
 
 export default function updateDom() {
     const main = document.querySelector("main");
@@ -355,10 +355,13 @@ export default function updateDom() {
             const year = taskDateInput.value.split("-")[0];
             const month = parseFloat(taskDateInput.value.split("-")[1]) - 1;
             const day = taskDateInput.value.split("-")[2];
-            const result = isToday(new Date(year, month, day));
+            const today = isToday(new Date(year, month, day));
+            const future = isFuture(new Date(year, month, day));
             let taskTab;
-            if (result) {
+            if (today) {
                 taskTab = "today";
+            } else if (future) {
+                taskTab = "upcoming";
             } else {
                 taskTab = "inbox";
             }
@@ -487,10 +490,13 @@ export default function updateDom() {
             const year = taskDate.textContent.split("-")[0];
             const month = parseFloat(taskDate.textContent.split("-")[1]) - 1;
             const day = taskDate.textContent.split("-")[2];
-            const result = isToday(new Date(year, month, day));
+            const today = isToday(new Date(year, month, day));
+            const future = isFuture(new Date(year, month, day));
             let taskTab;
-            if (result) {
+            if (today) {
                 taskTab = "today";
+            } else if (future) {
+                taskTab = "upcoming";
             } else {
                 taskTab = "inbox";
             }
@@ -611,7 +617,6 @@ export default function updateDom() {
     }
 
 
-
     const inboxButton = document.querySelector(".inbox-button");
     inboxButton.addEventListener("click", () => {
         createTaskList();
@@ -636,15 +641,41 @@ export default function updateDom() {
         const storedTask = JSON.parse(localStorage.getItem("tasks"));
         const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
         for (let i = 0; i < storedTask.length; i++) {
-            if (storedTask[i].tab === "inbox") {
-                const inboxTaskList = taskArray[i];
-                if (inboxTaskList) {
-                    taskListContainer.removeChild(inboxTaskList);
+            if (storedTask[i].tab !== "today") {
+                const notTodayTaskList = taskArray[i];
+                if (notTodayTaskList) {
+                    notTodayTaskList.style.display = "none";
                 }
+            }
+            if (taskListContainer.querySelector(".task-list") && taskListContainer.contains(fillerMessage)) {
+                taskListContainer.removeChild(fillerMessage);
+            }
+        }
+    })
 
-                if (taskListContainer.querySelector(".task-list") && taskListContainer.contains(fillerMessage)) {
-                    taskListContainer.removeChild(fillerMessage);
+    const upcomingButton = document.querySelector(".upcoming-button");
+    upcomingButton.addEventListener("click", () => {
+        const fillerMessage = document.createElement("p");
+        fillerMessage.textContent = "No upcoming tasks";
+        headerTitle.textContent = "Upcoming";
+        createTaskList();
+        taskListContainer.appendChild(fillerMessage);
+
+        if (document.querySelector(".add-task-button")) {
+            headerDiv.removeChild(addTaskButton);
+        }
+
+        const storedTask = JSON.parse(localStorage.getItem("tasks"));
+        const taskArray = Array.from(document.querySelectorAll(".task-list-container .task-list"));
+        for (let i = 0; i < storedTask.length; i++) {
+            if (storedTask[i].tab !== "upcoming") {
+                const notUpcomingTaskList = taskArray[i];
+                if (notUpcomingTaskList) {
+                    notUpcomingTaskList.style.display = "none";
                 }
+            }
+            if (taskListContainer.querySelector(".task-list") && taskListContainer.contains(fillerMessage)) {
+                taskListContainer.removeChild(fillerMessage);
             }
         }
     })

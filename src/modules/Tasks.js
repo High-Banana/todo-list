@@ -18,6 +18,7 @@ export default class Task {
             "tab": taskTab
         });
         localStorage.setItem("tasks", JSON.stringify(taskList));
+        console.log(taskList);
     }
 
     removeTaskList(index) {
