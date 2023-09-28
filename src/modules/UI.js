@@ -146,6 +146,7 @@ export default function updateDom() {
         updateButtonHandler(event);
         cancelButtonHandler();
         setupEditForm(event);
+        event.stopPropagation();
     }
 
     function priorityButtonHandler(event) {
@@ -379,7 +380,7 @@ export default function updateDom() {
         }
     }
 
-    function displayHiddenTaskInfo(element) {
+    function displayHiddenTaskInfo(element, event) {
         const collapseDiv = element.querySelector(".hidden-task");
         if (collapseDiv.clientHeight) {
             collapseDiv.style.maxHeight = 0;
@@ -393,6 +394,7 @@ export default function updateDom() {
             }, 300);
         }
         collapseDiv.classList.toggle("show");
+        event.stopPropagation();
     }
 
     function addButtonHandler() {
@@ -538,22 +540,13 @@ export default function updateDom() {
                 mutation.addedNodes.forEach((element) => {
                     if (element.querySelector(".task-title")) {
                         const visibleTaskElement = element.querySelector(".visible-task-info")
-                        visibleTaskElement.addEventListener("click", (event) => {
-                            displayHiddenTaskInfo(element);
-                            event.stopPropagation();
-                        })
+                        visibleTaskElement.addEventListener("click", (event) => displayHiddenTaskInfo(element, event));
                         const editButton = element.querySelector(".task-edit-button");
-                        editButton.addEventListener("click", (event) => {
-                            editButtonHandler(event);
-                        })
+                        editButton.addEventListener("click", (event) => editButtonHandler(event))
                         const priorityButton = element.querySelector(".task-priority-button");
-                        priorityButton.addEventListener("click", (event) => {
-                            priorityButtonHandler(event);
-                        })
+                        priorityButton.addEventListener("click", (event) => priorityButtonHandler(event))
                         const deleteButton = element.querySelector(".task-delete-button");
-                        deleteButton.addEventListener("click", (event) => {
-                            deleteButtonHandler(event);
-                        })
+                        deleteButton.addEventListener("click", (event) => deleteButtonHandler(event));
                     }
                 })
             }
@@ -567,24 +560,13 @@ export default function updateDom() {
         const taskList = document.querySelectorAll(".task-list");
         taskList.forEach((taskListElement) => {
             const visibleTaskElement = taskListElement.querySelector(".visible-task-info");
-            visibleTaskElement.addEventListener("click", (event) => {
-                displayHiddenTaskInfo(taskListElement);
-                event.stopPropagation();
-            })
+            visibleTaskElement.addEventListener("click", (event) => displayHiddenTaskInfo(taskListElement, event));
             const editButton = taskListElement.querySelector(".task-edit-button");
-            editButton.addEventListener("click", (event) => {
-                editButtonHandler(event);
-                event.stopPropagation();
-            })
+            editButton.addEventListener("click", (event) => editButtonHandler(event));
             const priorityButton = taskListElement.querySelector(".task-priority-button");
-            priorityButton.addEventListener("click", (event) => {
-                priorityButtonHandler(event);
-            })
+            priorityButton.addEventListener("click", (event) => priorityButtonHandler(event))
             const deleteButton = taskListElement.querySelector(".task-delete-button");
-            deleteButton.addEventListener("click", (event) => {
-                deleteButtonHandler(event);
-                event.stopPropagation();
-            })
+            deleteButton.addEventListener("click", (event) => deleteButtonHandler(event));
         })
     }
 
@@ -594,10 +576,9 @@ export default function updateDom() {
                 mutation.addedNodes.forEach((element) => {
                     if (element.querySelector(".project-name")) {
                         const deleteButton = element.querySelector(".delete-project-button");
-                        deleteButton.addEventListener("click", (event) => {
-                            deleteButtonHandler(event);
-                        })
+                        deleteButton.addEventListener("click", (event) => deleteButtonHandler(event))
                     }
+                    element.addEventListener("click", () => projectTabHandler(element));
                 })
             }
         })
@@ -679,4 +660,15 @@ export default function updateDom() {
             }
         }
     })
+
+    function projectTabHandler(element) {
+        headerTitle.textContent = element.textContent;
+    }
+
+    if (projectListContainer.querySelector(".project-list")) {
+        const projectList = document.querySelectorAll(".project-list");
+        projectList.forEach((element) => {
+            element.addEventListener("click", () => projectTabHandler(element))
+        })
+    }
 }
