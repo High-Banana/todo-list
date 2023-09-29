@@ -1,59 +1,58 @@
 export function loadProjectForm() {
-    const projectListContainer = document.querySelector(".project-list-container");
-    return projectListContainer.before(createProjectForm());
+  const projectListContainer = document.querySelector(".project-list-container");
+  return projectListContainer.before(createProjectForm());
 }
 
 export function loadTaskForm() {
-    const main = document.querySelector("main");
-    main.appendChild(createTaskForm());
-    addTaskProjectSelectOption();
+  const main = document.querySelector("main");
+  main.appendChild(createTaskForm());
+  addTaskProjectSelectOption();
 }
 
 export function loadEditForm() {
-    const main = document.querySelector("main");
-    main.appendChild(createEditForm());
-    addTaskProjectSelectOption();
+  const main = document.querySelector("main");
+  main.appendChild(createEditForm());
+  addTaskProjectSelectOption();
 }
 
 function createProjectForm() {
+  const projectForm = document.createElement("div");
+  projectForm.classList.add("project-form");
 
-    const projectForm = document.createElement("div");
-    projectForm.classList.add("project-form");
+  const input = document.createElement("input");
+  input.setAttribute("id", "project-title-input");
+  input.setAttribute("autocomplete", "off");
+  input.setAttribute("maxlength", "12");
+  input.placeholder = "Enter Project Title";
 
-    const input = document.createElement("input");
-    input.setAttribute("id", "project-title-input");
-    input.setAttribute("autocomplete", "off");
-    input.setAttribute("maxlength", "12");
-    input.placeholder = "Enter Project Title";
+  setTimeout(() => {
+    input.focus();
+  }, 0);
 
-    setTimeout(() => {
-        input.focus();
-    }, 0)
+  const projectFormButton = document.createElement("div");
+  projectFormButton.classList.add("project-form-button");
 
-    const projectFormButton = document.createElement("div");
-    projectFormButton.classList.add("project-form-button");
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add";
+  addButton.classList.add("addButton", "project");
 
-    const addButton = document.createElement("button");
-    addButton.textContent = "Add";
-    addButton.classList.add("addButton", "project");
+  const cancelButton = document.createElement("button");
+  cancelButton.textContent = "Cancel";
+  cancelButton.classList.add("cancelButton");
 
-    const cancelButton = document.createElement("button");
-    cancelButton.textContent = "Cancel";
-    cancelButton.classList.add("cancelButton");
+  projectFormButton.appendChild(addButton);
+  projectFormButton.appendChild(cancelButton);
 
-    projectFormButton.appendChild(addButton);
-    projectFormButton.appendChild(cancelButton);
+  projectForm.appendChild(input);
+  projectForm.appendChild(projectFormButton);
 
-    projectForm.appendChild(input);
-    projectForm.appendChild(projectFormButton);
-
-    return projectForm;
+  return projectForm;
 }
 
 function createTaskForm() {
-    const popupField = document.createElement("div");
-    popupField.classList.add("popup-field");
-    popupField.innerHTML = `<form class="task-form">
+  const popupField = document.createElement("div");
+  popupField.classList.add("popup-field");
+  popupField.innerHTML = `<form class="task-form">
     <fieldset>
         <div class="column-one">
             <div class="form-element title">
@@ -88,14 +87,14 @@ function createTaskForm() {
         <button class="cancelButton">Cancel</button>
         <button class="addButton task">Add Task</button>
     </div>
-</form>`
-    return popupField;
+</form>`;
+  return popupField;
 }
 
 function createEditForm() {
-    const popupField = document.createElement("div");
-    popupField.classList.add("popup-field");
-    popupField.innerHTML = `<form class="task-form edit">
+  const popupField = document.createElement("div");
+  popupField.classList.add("popup-field");
+  popupField.innerHTML = `<form class="task-form edit">
     <fieldset>
         <div class="column-one">
             <div class="form-element title">
@@ -130,32 +129,32 @@ function createEditForm() {
         <button class="cancelButton">Cancel</button>
         <button class="updateButton">Update Task</button>
     </div>
-</form>`
-    return popupField;
+</form>`;
+  return popupField;
 }
 
 function addTaskProjectSelectOption() {
-    const projectListContainer = document.querySelector(".project-list-container");
-    const taskForm = document.querySelector(".task-form > fieldset > .column-two");
+  const projectListContainer = document.querySelector(".project-list-container");
+  const taskForm = document.querySelector(".task-form > fieldset > .column-two");
 
-    const projectFormElement = document.createElement("div");
-    projectFormElement.classList.add("form-element", "project");
+  const projectFormElement = document.createElement("div");
+  projectFormElement.classList.add("form-element", "project");
 
-    const projectSelectLabel = document.createElement("label");
-    projectSelectLabel.setAttribute("for", "task-project-field");
-    projectSelectLabel.textContent = "Project"
-    
-    const projectSelectField = document.createElement("select");
-    projectSelectField.setAttribute("id", "task-project-field");
-    projectSelectField.add(new Option("Inbox"));
-    if(projectListContainer.querySelector(".project-list")) {
-        const projectList = document.querySelectorAll(".project-list");
-        projectList.forEach((element) => {
-            const projectName = element.querySelector("p");
-            projectSelectField.add(new Option(projectName.textContent));
-        })
-    }
-    
-    projectFormElement.append(projectSelectLabel, projectSelectField);
-    taskForm.appendChild(projectFormElement);
+  const projectSelectLabel = document.createElement("label");
+  projectSelectLabel.setAttribute("for", "task-project-field");
+  projectSelectLabel.textContent = "Project";
+
+  const projectSelectField = document.createElement("select");
+  projectSelectField.setAttribute("id", "task-project-field");
+  projectSelectField.add(new Option("Inbox"));
+  if (projectListContainer.querySelector(".project-list")) {
+    const projectList = document.querySelectorAll(".project-list");
+    projectList.forEach((element) => {
+      const projectName = element.querySelector("p");
+      projectSelectField.add(new Option(projectName.textContent));
+    });
+  }
+
+  projectFormElement.append(projectSelectLabel, projectSelectField);
+  taskForm.appendChild(projectFormElement);
 }
